@@ -1,0 +1,31 @@
+1) First go to https://github.com/EricaNguyen/AutoAudio
+
+2) Click on the green 'clone or download' button on the right hand side.
+
+3) Under 'clone with HTTPS', copy the link to clipboard.
+
+4) In your terminal (unix), type git clone and then paste the link in:
+
+    $git clone https://github.com/EricaNguyen/AutoAudio.git
+
+(do not include the '$')
+
+5)  There will be a new directory in your current directory called 'AutoAudio'
+
+6) $cd AutoAudio
+
+7) $git pull
+      -this will update the repository to the online version
+
+8) to push a file:
+
+   $git add filename.txt
+
+   $git commit
+    press i then type in some note for the commit message
+    hit esc then type ZZ (yes, capitals) to save and quit
+
+   $git push
+    enter username and password to github account
+
+9) done :)
