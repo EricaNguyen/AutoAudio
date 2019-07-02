@@ -6,26 +6,26 @@
 
 4) In your terminal (unix), type git clone and then paste the link in:
 
-    $git clone https://github.com/EricaNguyen/AutoAudio.git
+    $ git clone https://github.com/EricaNguyen/AutoAudio.git
 
 (do not include the '$')
 
 5)  There will be a new directory in your current directory called 'AutoAudio'
 
-6) $cd AutoAudio
+6) $ cd AutoAudio
 
-7) $git pull
+7) $ git pull
       -this will update the repository to the online version
 
 8) to push a file:
 
-   $git add filename.txt
+   $ git add filename.txt
 
-   $git commit
+   $ git commit
     press i then type in some note for the commit message
     hit esc then type ZZ (yes, capitals) to save and quit
 
-   $git push
+   $ git push
     enter username and password to github account
 
 9) done :)
