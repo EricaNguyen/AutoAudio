@@ -14,6 +14,7 @@ CHANNELS = 1
 RATE = 44100 # Samples per second
 CHUNK = 1024 # Number of data samples (Bytes)
 RECORD_SECONDS = 5
+TOLERANCE = 0.8
 # WAVE_OUTPUT = "output.wav"
 
 # I don't really understand FFT 
@@ -40,9 +41,11 @@ if len(sys.argv) > 1: # If file-name specified on cmdline
     totalframes = 0
 
 # Aubio's Pitch Recognition
-pDetection = aubio.pitch("default", 2048, 1024, RATE)
-pDetection.set_unit("Hz")
-pDetection.set_silence(-40)
+fDetection = aubio.pitch("default", 2048, 1024, RATE)
+fDetection.set_unit("Hz")
+fDetection.set_silence(-40)
+fDetection.set_tolerance(TOLERANCE)
+
 
 
 
@@ -63,12 +66,11 @@ while True:
     try: 
         data = stream.read(CHUNK)
         samples = np.fromstring(data, dtype = aubio.float_type)
-        freq = pDetection(samples)[0]
+        freq = fDetection(samples)[0]
+        confidence = fDetection.get_confidence()
         volume = np.sum(samples**2)/len(samples)
-        volume = "{:.6f}".format(volume)
-
-        print(freq ++ " Hz")
-        print(volume)
+        f_volume = "{:.6f}".format(volume)
+        print("{} / {} / {}".format(freq, confidence, f_volume))
 
     except KeyboardInterrupt:
         print ("User Ctrl+C. Exiting...")
