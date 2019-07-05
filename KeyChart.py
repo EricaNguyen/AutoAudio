@@ -8,6 +8,12 @@
 
 # Pre-set piano key frequencies stored in a Tuple. They should
 #     remain consistent for the entire project.
+
+
+
+# Change the value of "frequency" to test different numbers
+#frequency = 4200
+
 keys = (27.50000,
         29.13524,
         30.86771,
@@ -119,34 +125,50 @@ def findNote(freq):
         avg = keys[x] + keys[x+1]
         avg = avg / 2
         if freq < avg:
+            #print("index: ")
+            #print(x)
             return x
+    #print("index: ")
+    #print("87")
     return 87
-
-# TEST CODE: Hard-coded frequency
-# Change the value of "frequency" to test different numbers
-frequency = 28.5
-location = findNote(frequency)
 
 #''' --------------------------------------------------------------------------
 # comment/uncomment this block for alternate algorithm
 
 # another tuple that stores the note names
-notes = ("A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#")
+notes = ("A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G", "G#")
 
-noteName = notes[location % 12]
-print("Note you played: ")
-print(noteName)
+#loc is location local var
+def alternate(loc):
+   
+   noteName = notes[loc % 12]
+   #print("Note: ")
+   #print(noteName)
 
-octave = location / 12
-print("Octave you are in: ")
-# Base index is 0. Add 1 to index, so it's easier for user to see
-# Range from 1 - 8
-print(int(octave) + 1)
+   #add one, subtract later if A, Bb, or B.
+   octave = (loc / 12) + 1
 
-# alternate algorithm ends here
-#---------------------------------------------------------------------------'''
+   # 0 is notes before first C, 8 is highest note on piano (C)
+   if (noteName == "A" or noteName == "Bb" or noteName == "B"):
+      octave = octave - 1
 
-print("Key on keyboard: ")
-# Base index is 0. Add 1 to index, so it's easier for user to see
-# Range from 1 - 88
-print(location + 1)
+   #convert to int (for printing)
+   iOctave = (int(octave))
+   #convert to string (for concatenation)
+   sOctave = (str(iOctave))
+   #concatenate
+   pianoKey = noteName + sOctave
+   print ("Key on Piano: " + pianoKey)
+
+   #print("Octave you are in: ")
+   # Range from 0 to 8
+   #print(int(octave))
+
+   #print("Key on keyboard: ")
+   # Base index is 0. Add 1 to index, so it's easier for user to see
+   # Range from 1 - 88
+   #print(loc + 1)
+
+#comment out when done testing:
+#location = findNote(frequency)
+#alternate(location)

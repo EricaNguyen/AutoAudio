@@ -6,6 +6,9 @@ import aubio
 import numpy as np 
 import matplotlib.pyplot as plt
 
+#linking together
+import KeyChart
+
 FRAME_SIZE = 1024 * 2
 FRAMES_PER_FFT = 16 # FFT = Fast Fourier Transform
 # FORMAT = pyaudio.paInt16 # Bytes per sample
@@ -49,7 +52,7 @@ fDetection.set_tolerance(TOLERANCE)
 
 
 
-print("* recording")
+print("* RECORDING")
 
 frames = []
 
@@ -70,7 +73,15 @@ while True:
         confidence = fDetection.get_confidence()
         volume = np.sum(samples**2)/len(samples)
         f_volume = "{:.6f}".format(volume)
-        print("{} / {} / {}".format(freq, confidence, f_volume))
+
+        #uncomment to print original stuff
+        #print("{} / {} / {}".format(freq, confidence, f_volume))
+
+        # if note is too low, don't print
+        if(freq > 25.0):
+           #call KeyChart
+           idx = KeyChart.findNote(freq)
+           KeyChart.alternate(idx) 
 
     except KeyboardInterrupt:
         print ("User Ctrl+C. Exiting...")
@@ -78,7 +89,7 @@ while True:
 
 
 
-print("* done recording")
+print("* RECORDING STOPPED")
 
 
 stream.stop_stream()
