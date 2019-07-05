@@ -1,3 +1,4 @@
+import sys
 import pyaudio
 import wave
 import struct
@@ -13,7 +14,7 @@ CHANNELS = 1
 RATE = 44100 # Samples per second
 CHUNK = 1024 # Number of data samples (Bytes)
 RECORD_SECONDS = 5
-WAVE_OUTPUT = "output.wav"
+# WAVE_OUTPUT = "output.wav"
 
 # I don't really understand FFT 
 '''
@@ -32,8 +33,14 @@ stream = p.open(
     frames_per_buffer = CHUNK
 )
 
+
+if len(sys.argv) > 1: # If file-name specified on cmdline
+    WAVE_OUTPUT_NAME = sys.argv[1] # output file with this name
+    outputsink = aubio.sink(WAVE_OUTPUT_NAME, RATE)
+    totalframes = 0
+
 # Aubio's Pitch Recognition
-pDetection = aubio.pitch("default", 2048, 2048//2, RATE)
+pDetection = aubio.pitch("default", 2048, 1024, RATE)
 pDetection.set_unit("Hz")
 pDetection.set_silence(-40)
 
@@ -56,15 +63,13 @@ while True:
     try: 
         data = stream.read(CHUNK)
         samples = np.fromstring(data, dtype = aubio.float_type)
-        pitch = pDetection(samples)[0]
+        freq = pDetection(samples)[0]
         volume = np.sum(samples**2)/len(samples)
         volume = "{:.6f}".format(volume)
 
-        print(pitch)
+        print(freq ++ " Hz")
         print(volume)
 
-        # Recording
-        frames.append(data)
     except KeyboardInterrupt:
         print ("User Ctrl+C. Exiting...")
         break
@@ -73,17 +78,19 @@ while True:
 
 print("* done recording")
 
+
 stream.stop_stream()
 stream.close()
 p.terminate()
 
+'''
 wf = wave.open(WAVE_OUTPUT, 'wb') # writeback
 wf.setnchannels(CHANNELS)
 wf.setsampwidth(p.get_sample_size(FORMAT))
 wf.setframerate(RATE)
 wf.writeframes(b''.join(frames))
 wf.close()
-
+'''
 '''
 data = stream.read(CHUNK)
 data_int = np.array(struct.unpack(str(2 * CHUNK) + 'B', data), dtype = 'b') + 127
