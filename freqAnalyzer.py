@@ -24,7 +24,7 @@ CHUNK = 1024 # Number of data samples (Bytes)
 #CHUNK = 2048
 RECORD_SECONDS = 5
 TOLERANCE = 0.8
-WAVE_OUTPUT_NAME = "def_output.wav"
+WAVE_OUTPUT_NAME = "def_output.mp3"
 
 # I don't really understand FFT 
 '''
