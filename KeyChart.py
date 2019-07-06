@@ -140,7 +140,7 @@ notes = ("A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G", "G#")
 
 #loc is location local var
 def alternate(loc):
-   
+   fh = open("output.txt", "a")
    noteName = notes[loc % 12]
    #print("Note: ")
    #print(noteName)
@@ -159,6 +159,8 @@ def alternate(loc):
    #concatenate
    pianoKey = noteName + sOctave
    print ("Key on Piano: " + pianoKey)
+   fh.write(pianoKey + "\n")
+   fh.close()
 
    #print("Octave you are in: ")
    # Range from 0 to 8

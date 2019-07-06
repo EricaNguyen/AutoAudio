@@ -16,13 +16,15 @@ import KeyChart
 FRAME_SIZE = 1024 * 2
 FRAMES_PER_FFT = 16 # FFT = Fast Fourier Transform
 # FORMAT = pyaudio.paInt16 # Bytes per sample
+#FORMAT = pyaudio.paInt16
 FORMAT = pyaudio.paFloat32
 CHANNELS = 1
 RATE = 44100 # Samples per second
 CHUNK = 1024 # Number of data samples (Bytes)
+#CHUNK = 2048
 RECORD_SECONDS = 5
 TOLERANCE = 0.8
-# WAVE_OUTPUT = "output.wav"
+WAVE_OUTPUT_NAME = "def_output.wav"
 
 # I don't really understand FFT 
 '''
@@ -44,7 +46,6 @@ stream = p.open(
 
 if len(sys.argv) > 1: # If file-name specified on cmdline
     WAVE_OUTPUT_NAME = sys.argv[1] # output file with this name
-    outputsink = aubio.sink(WAVE_OUTPUT_NAME, RATE)
 
 # Aubio's Pitch Recognition
 fDetection = aubio.pitch("default", 2048, 1024, RATE)
@@ -75,6 +76,7 @@ while True:
         frames.append(data)
 
         samples = np.fromstring(data, dtype = aubio.float_type)
+
         freq = fDetection(samples)[0]
         confidence = fDetection.get_confidence()
         #volume = np.sum(samples**2)/len(samples)
@@ -83,13 +85,15 @@ while True:
         #decibel = 20 * np.log10(rms) #dB = 20 * log10(Amp)
         #print(decibel)
         #uncomment to print original stuff
-        #print("{} / {} / {}".format(freq, confidence, f_volume))
+        #print("{} / {}".format(freq, confidence))
 
         # if note is too low, don't print
+        
         if(freq > 25.0):
            #call KeyChart
            idx = KeyChart.findNote(freq)
            KeyChart.alternate(idx) 
+        
 
     except KeyboardInterrupt:
         print ("User Ctrl+C. Exiting...")
@@ -105,7 +109,7 @@ stream.close()
 p.terminate()
 
 
-wf = wave.open(WAVE_OUTPUT, 'wb') # writeback
+wf = wave.open(WAVE_OUTPUT_NAME, 'wb') # writeback
 wf.setnchannels(CHANNELS)
 wf.setsampwidth(p.get_sample_size(FORMAT))
 wf.setframerate(RATE)
