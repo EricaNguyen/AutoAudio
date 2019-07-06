@@ -69,8 +69,11 @@ for i in range(0, NUM_CHUNKS):
 '''
 
 while True:
-    try: 
+    try:
+        # recording 
         data = stream.read(CHUNK)
+        frames.append(data)
+
         samples = np.fromstring(data, dtype = aubio.float_type)
         freq = fDetection(samples)[0]
         confidence = fDetection.get_confidence()
@@ -101,14 +104,14 @@ stream.stop_stream()
 stream.close()
 p.terminate()
 
-'''
+
 wf = wave.open(WAVE_OUTPUT, 'wb') # writeback
 wf.setnchannels(CHANNELS)
 wf.setsampwidth(p.get_sample_size(FORMAT))
 wf.setframerate(RATE)
 wf.writeframes(b''.join(frames))
 wf.close()
-'''
+
 '''
 data = stream.read(CHUNK)
 data_int = np.array(struct.unpack(str(2 * CHUNK) + 'B', data), dtype = 'b') + 127
