@@ -3,8 +3,12 @@ import pyaudio
 import wave
 import struct
 import aubio
+import audioop
+import math
 import numpy as np 
 import matplotlib.pyplot as plt
+import warnings
+warnings.simplefilter("ignore", DeprecationWarning)
 
 #linking together
 import KeyChart
@@ -41,7 +45,6 @@ stream = p.open(
 if len(sys.argv) > 1: # If file-name specified on cmdline
     WAVE_OUTPUT_NAME = sys.argv[1] # output file with this name
     outputsink = aubio.sink(WAVE_OUTPUT_NAME, RATE)
-    totalframes = 0
 
 # Aubio's Pitch Recognition
 fDetection = aubio.pitch("default", 2048, 1024, RATE)
@@ -71,9 +74,11 @@ while True:
         samples = np.fromstring(data, dtype = aubio.float_type)
         freq = fDetection(samples)[0]
         confidence = fDetection.get_confidence()
-        volume = np.sum(samples**2)/len(samples)
-        f_volume = "{:.6f}".format(volume)
-
+        #volume = np.sum(samples**2)/len(samples)
+        #f_volume = "{:.6f}".format(volume)
+        #rms = audioop.rms(data,1)
+        #decibel = 20 * np.log10(rms) #dB = 20 * log10(Amp)
+        #print(decibel)
         #uncomment to print original stuff
         #print("{} / {} / {}".format(freq, confidence, f_volume))
 
