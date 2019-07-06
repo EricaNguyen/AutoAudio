@@ -32,6 +32,8 @@ SAMPLES_PER_FFT = FRAME_SIZE * FRAMES_PER_FFT
 FREQ_STEP = float(RATE) / SAMPLES_PER_FFT 
 '''
 
+# Open the file
+fh = open("output.txt", "w")
 # Open the stream
 p = pyaudio.PyAudio()
 
@@ -92,7 +94,8 @@ while True:
         if(freq > 25.0):
            #call KeyChart
            idx = KeyChart.findNote(freq)
-           KeyChart.alternate(idx) 
+           pk = KeyChart.alternate(idx) 
+           fh.write(pk + "\n")
         
 
     except KeyboardInterrupt:
@@ -108,6 +111,7 @@ stream.stop_stream()
 stream.close()
 p.terminate()
 
+fh.close()
 
 wf = wave.open(WAVE_OUTPUT_NAME, 'wb') # writeback
 wf.setnchannels(CHANNELS)

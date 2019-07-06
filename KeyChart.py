@@ -14,6 +14,9 @@
 # Change the value of "frequency" to test different numbers
 #frequency = 4200
 
+import os.path
+from os import path
+
 keys = (27.50000,
         29.13524,
         30.86771,
@@ -140,7 +143,7 @@ notes = ("A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G", "G#")
 
 #loc is location local var
 def alternate(loc):
-   fh = open("output.txt", "a")
+   
    noteName = notes[loc % 12]
    #print("Note: ")
    #print(noteName)
@@ -158,9 +161,8 @@ def alternate(loc):
    sOctave = (str(iOctave))
    #concatenate
    pianoKey = noteName + sOctave
-   print ("Key on Piano: " + pianoKey)
-   fh.write(pianoKey + "\n")
-   fh.close()
+   print(pianoKey)
+   return pianoKey
 
    #print("Octave you are in: ")
    # Range from 0 to 8
