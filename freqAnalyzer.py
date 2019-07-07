@@ -1,6 +1,5 @@
 import sys
 import pyaudio
-import wave
 import struct
 import aubio
 import audioop
@@ -48,6 +47,9 @@ stream = p.open(
 
 if len(sys.argv) > 1: # If file-name specified on cmdline
     WAVE_OUTPUT_NAME = sys.argv[1] # output file with this name
+    outputsink = aubio.sink(WAVE_OUTPUT_NAME, RATE)
+else:
+    outputsink = aubio.sink(WAVE_OUTPUT_NAME, RATE)
 
 # Aubio's Pitch Recognition
 fDetection = aubio.pitch("default", 2048, 1024, RATE)
@@ -60,9 +62,7 @@ fDetection.set_tolerance(TOLERANCE)
 
 print("* RECORDING")
 
-frames = []
-
-NUM_CHUNKS = int((RATE / CHUNK) * RECORD_SECONDS)
+#NUM_CHUNKS = int((RATE / CHUNK) * RECORD_SECONDS)
 
 '''
 # RATE * TIME_RECORDED / CHUNKS = NUM CHUNKS
@@ -73,9 +73,7 @@ for i in range(0, NUM_CHUNKS):
 
 while True:
     try:
-        # recording 
         data = stream.read(CHUNK)
-        frames.append(data)
 
         samples = np.fromstring(data, dtype = aubio.float_type)
 
@@ -90,6 +88,8 @@ while True:
         #print("{} / {}".format(freq, confidence))
 
         # if note is too low, don't print
+        if outputsink:
+            outputsink(samples, len(samples))
         
         if(freq > 25.0):
            #call KeyChart
@@ -112,13 +112,6 @@ stream.close()
 p.terminate()
 
 fh.close()
-
-wf = wave.open(WAVE_OUTPUT_NAME, 'wb') # writeback
-wf.setnchannels(CHANNELS)
-wf.setsampwidth(p.get_sample_size(FORMAT))
-wf.setframerate(RATE)
-wf.writeframes(b''.join(frames))
-wf.close()
 
 '''
 data = stream.read(CHUNK)
