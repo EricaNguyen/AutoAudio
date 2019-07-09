@@ -161,6 +161,10 @@ def alternate(loc):
    sOctave = (str(iOctave))
    #concatenate
    pianoKey = noteName + sOctave
+
+
+#MICHAEL WORK HERE :)
+
    print(pianoKey)
    return pianoKey
 
