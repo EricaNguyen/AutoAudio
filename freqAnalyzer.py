@@ -32,7 +32,7 @@ FREQ_STEP = float(RATE) / SAMPLES_PER_FFT
 '''
 
 # Open the file
-fh = open("output.txt", "w")
+fh = open("output.ly", "w")
 # Open the stream
 p = pyaudio.PyAudio()
 
@@ -71,6 +71,9 @@ for i in range(0, NUM_CHUNKS):
     frames.append(data)
 '''
 
+staff = ""
+
+#while stream.is_active()
 while True:
     try:
         data = stream.read(CHUNK)
@@ -94,30 +97,53 @@ while True:
         if(freq > 25.0):
            #call KeyChart
            idx = KeyChart.findNote(freq)
-           pk = KeyChart.alternate(idx) 
-           fh.write(pk + "\n")
+           nn = KeyChart.alternate(idx)
+           nnf = nn + " " 
+           # Adding the notes to the string
+           staff += nnf
+           
         
 
     except KeyboardInterrupt:
         print ("User Ctrl+C. Exiting...")
         break
 
-
-
 print("* RECORDING STOPPED")
 
 
+# Setting up the ly file
+v = "version"
+vn = '"2.18.2"'
+version = "\{} {}".format(v, vn)
+l = "language"
+lang = '"english"'
+language = "\{} {}".format(l, lang)
+
+# Writing setup into file
+fh.write(version + "\n")
+fh.write(language + "\n")
+
+# Setting up header
+title = r"""\header {
+  title = "My Song"
+  composer = "Username"
+  tagline = "Copyright: Username"
+}"""
+
+# Writing header into file
+fh.write(title + "\n")
+
+#Setting up 
+staffh = "{\n\n"
+staffh += r"  \clef bass " + staff + "\n"  
+staffh += "\n}\n"
+
+fh.write(staffh + "\n")
+
+# Closing stream
 stream.stop_stream()
 stream.close()
 p.terminate()
 
+# Closing file handling
 fh.close()
-
-'''
-data = stream.read(CHUNK)
-data_int = np.array(struct.unpack(str(2 * CHUNK) + 'B', data), dtype = 'b') + 127
-
-fig, ax = plt.subplots()
-ax.plot(data_int, '-')
-plt.show()
-'''

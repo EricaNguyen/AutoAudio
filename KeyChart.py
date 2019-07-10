@@ -139,7 +139,7 @@ def findNote(freq):
 # comment/uncomment this block for alternate algorithm
 
 # another tuple that stores the note names
-notes = ("A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G", "G#")
+notes = ("A", "Bf", "B", "C", "Cs", "D", "Ef", "E", "F", "Fs", "G", "Gs")
 
 #loc is location local var
 def alternate(loc):
@@ -161,12 +161,8 @@ def alternate(loc):
    sOctave = (str(iOctave))
    #concatenate
    pianoKey = noteName + sOctave
-
-
-#MICHAEL WORK HERE :)
-
    print(pianoKey)
-   return pianoKey
+   return noteName.lower()
 
    #print("Octave you are in: ")
    # Range from 0 to 8
