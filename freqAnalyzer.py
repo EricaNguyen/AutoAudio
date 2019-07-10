@@ -114,16 +114,16 @@ print("* RECORDING STOPPED")
 # Setting up the ly file
 v = "version"
 vn = '"2.18.2"'
-version = "\{} {}".format(v, vn)
+version = r"\{} {}".format(v, vn)
 l = "language"
 lang = '"english"'
-language = "\{} {}".format(l, lang)
+language = r"\{} {}".format(l, lang)
 
 # Writing setup into file
 fh.write(version + "\n")
 fh.write(language + "\n")
 
-# Setting up header
+# Setting up header block
 title = r"""\header {
   title = "My Song"
   composer = "Username"
@@ -134,8 +134,10 @@ title = r"""\header {
 fh.write(title + "\n")
 
 #Setting up 
+relative = r"\{} {}".format("relative","c'")
+#fh.write(relative + "\n")
 staffh = "{\n\n"
-staffh += r"  \clef bass " + staff + "\n"  
+staffh += r"  \clef treble " + staff + "\n"  
 staffh += "\n}\n"
 
 fh.write(staffh + "\n")

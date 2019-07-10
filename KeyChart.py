@@ -16,6 +16,7 @@
 
 import os.path
 from os import path
+import itertools
 
 keys = (27.50000,
         29.13524,
@@ -160,9 +161,28 @@ def alternate(loc):
    #convert to string (for concatenation)
    sOctave = (str(iOctave))
    #concatenate
+
+   # Octave logic
+   # c in LilyPond syntax is c2 so middle C is c'
+   # Octaves (Middle C and above): 4 = c' 5 = c'' 6 = c''' 7 = c''''
+   
+   lilyOc = ""
+   apos = "'"
+   if iOctave >= 4:
+      for _ in itertools.repeat(None, int(octave)-3):
+         lilyOc += apos
+   # Octaves below Middle C: 2 = c, 1 = c,,
+   if iOctave < 4 and iOctave != 3:
+      if iOctave == 1:
+              lilyOc = ",,"
+      elif iOctave == 2:
+              lilyOc = ','
+   else: # Currently the third octave is displaying properly. I'll have to figure that out
+      lilyOc += apos
+
    pianoKey = noteName + sOctave
    print(pianoKey)
-   return noteName.lower()
+   return noteName.lower() + lilyOc
 
    #print("Octave you are in: ")
    # Range from 0 to 8
