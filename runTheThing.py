@@ -33,5 +33,5 @@ button3.pack(side=LEFT)
 T = Text(master, height=1, width=14)
 T.pack();
 T.insert(END, "Not Recording")
-
+p = subprocess.Popen(['head', 'README.txt'])
 mainloop()
