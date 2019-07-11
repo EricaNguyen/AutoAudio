@@ -9,6 +9,7 @@ warnings.simplefilter("ignore", DeprecationWarning)
 
 #linking together
 import KeyChart
+from runTheThing import getName
 
 FRAME_SIZE = 1024 * 2
 FRAMES_PER_FFT = 16 # FFT = Fast Fourier Transform
@@ -29,8 +30,6 @@ SAMPLES_PER_FFT = FRAME_SIZE * FRAMES_PER_FFT
 FREQ_STEP = float(RATE) / SAMPLES_PER_FFT 
 '''
 
-# Open the file
-fh = open("output.ly", "w")
 # Open the stream
 p = pyaudio.PyAudio()
 
@@ -114,6 +113,9 @@ while True:
         break
 
 print("* RECORDING STOPPED")
+
+# Open the file
+fh = open(getName(), "w")
 
 
 # Setting up the ly file
