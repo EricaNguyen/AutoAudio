@@ -15,17 +15,18 @@ def record():
 	#T.delete('1.0', END)
 	#T.insert(END,"Recording")
 	label.config(text="Recording")
-	p = subprocess.Popen(['python', 'freqAnalyzer.py'])
-	#test code, use instead of subprocess if thing don't work
-	#p = subprocess.Popen(['python', 'runTheThing.py'])
-	bool = 1;
+	if bool == 0:
+		p = subprocess.Popen(['python', 'freqAnalyzer.py'])
+		#test code, use instead of subprocess if thing don't work
+		#p = subprocess.Popen(['python', 'runTheThing.py'])
+	bool = 1
 	#print(fileName)
 	
 #stop record button functions, aka button 2
 def stopR():
 	global fileName
 	global bool
-	p.kill()
+	p.terminate()
 	#T.delete('1.0', END)
 	#T.insert(END,"Not Recording")
 	label.config(text="Not Recording")
@@ -33,11 +34,13 @@ def stopR():
 	#check if there was any recording done
 	if bool == 1:
 		#pass filename into lilypond or freqAnalyzer
-		bool = 0;
+		bool = 0
 	
 
 #quitting the program, aka button 3
 def quit():
+	if bool == 1:
+		p.terminate()
 	exit()
 	
 master = Tk()
