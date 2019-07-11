@@ -1,10 +1,14 @@
 from tkinter import *
+import os
+import signal
 import subprocess
 
 #import freqAnalyzer
 
+p = subprocess.Popen(['head', 'README.txt'])
 #command definitions
 def record():
+	global p
 	T.delete('1.0', END)
 	T.insert(END,"Recording")
 	p = subprocess.Popen(['python', 'freqAnalyzer.py'])
@@ -13,7 +17,7 @@ def record():
 	
 def stopR():
 	#will not work with test code, as p will terminate on its own very quick,
-	p.terminate
+	p.kill()
 	T.delete('1.0', END)
 	T.insert(END,"Not Recording")
 
@@ -33,5 +37,4 @@ button3.pack(side=LEFT)
 T = Text(master, height=1, width=14)
 T.pack();
 T.insert(END, "Not Recording")
-p = subprocess.Popen(['head', 'README.txt'])
 mainloop()
