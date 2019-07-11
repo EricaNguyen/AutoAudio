@@ -9,7 +9,7 @@ warnings.simplefilter("ignore", DeprecationWarning)
 
 #linking together
 import KeyChart
-import runTheThing
+from runTheThing import getName
 
 FRAME_SIZE = 1024 * 2
 FRAMES_PER_FFT = 16 # FFT = Fast Fourier Transform
@@ -115,7 +115,7 @@ while True:
 print("* RECORDING STOPPED")
 
 # Open the file
-fh = open(runTheThing.getName(), "w")
+fh = open(getName(), "w")
 
 
 # Setting up the ly file
