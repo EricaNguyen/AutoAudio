@@ -16,7 +16,7 @@ def record():
 	#T.insert(END,"Recording")
 	label.config(text="Recording")
 	if bool == 0:
-		p = subprocess.Popen(['python', 'freqAnalyzer.py'])
+		p = subprocess.Popen(['./CleanAndRun.sh'])
 		#test code, use instead of subprocess if thing don't work
 		#p = subprocess.Popen(['python', 'runTheThing.py'])
 	bool = 1
@@ -42,7 +42,10 @@ def quit():
 	if bool == 1:
 		p.terminate()
 	exit()
-	
+
+def getName():
+	return fileName
+
 master = Tk()
 master.title("AutoAudio")
 frame = Frame(master)
