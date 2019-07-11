@@ -26,6 +26,8 @@ def record():
 #stop record button functions, aka button 2
 def stopR():
 	global fileName
+	global songName
+	global authorName
 	global bool
 	if bool == 1:
 		p.terminate()
