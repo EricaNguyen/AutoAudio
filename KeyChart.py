@@ -104,8 +104,7 @@ keys = (27.50000,
         3322.438,
         3520.000,
         3729.310,
-        3951.066,
-        4186.009
+        3951.066
         )
 		
 # This script is designed to return the
@@ -123,7 +122,7 @@ keys = (27.50000,
 # If no matching value is found, function should return maximum index: 87
 # If value is smaller than minimum value (27.5 Hz), returns 0
 def findNote(freq):
-    for x in range(0, 87):
+    for x in range(0, 86):
         #this loop should go from 0 to 86
         #that is just how Python works
         avg = keys[x] + keys[x+1]
@@ -134,7 +133,7 @@ def findNote(freq):
             return x
     #print("index: ")
     #print("87")
-    return 87
+    return 86
 
 #''' --------------------------------------------------------------------------
 # comment/uncomment this block for alternate algorithm
@@ -195,4 +194,5 @@ def alternate(loc):
 
 #comment out when done testing:
 #location = findNote(frequency)
+#print (location)
 #alternate(location)
