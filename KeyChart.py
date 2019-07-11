@@ -165,19 +165,31 @@ def alternate(loc):
    # c in LilyPond syntax is c2 so middle C is c'
    # Octaves (Middle C and above): 4 = c' 5 = c'' 6 = c''' 7 = c''''
    
+   #Octave -1: c,,,, d,,,, e,,,, f,,,, g,,,, a,,,, b,,,,
+   #Octave 0: c,,, d,,, e,,, f,,, g,,, a,,, b,,, 
+   #Octave 1: c,, d,, e,, f,, g,, a,, b,, 
+   #Octave 2: c, d, e, f, g, a, b, 
+   #Octave 3: c d e f g a b  
+   #Octave 4: c' d' e' f' g' a' b'  
+   #Octave 5: c'' d'' e'' f'' g'' a'' b''
+   #Octave 6: c''' d''' e''' f''' g''' a''' b''' 
+   #Octave 7: c'''' d'''' e'''' f'''' g'''' a'''' b'''' 
+
+
    lilyOc = ""
    apos = "'"
    if iOctave >= 4:
       for _ in itertools.repeat(None, int(octave)-3):
          lilyOc += apos
    # Octaves below Middle C: 2 = c, 1 = c,,
-   if iOctave < 4 and iOctave != 3:
+   elif iOctave < 4:
       if iOctave == 1:
               lilyOc = ",,"
       elif iOctave == 2:
               lilyOc = ','
-   else: # Currently the third octave is displaying properly. I'll have to figure that out
-      lilyOc += apos
+      else:
+              lilyOc
+
 
    pianoKey = noteName + sOctave
    print(pianoKey)
