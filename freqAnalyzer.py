@@ -1,11 +1,9 @@
 import sys
 import pyaudio
-import struct
 import aubio
 import audioop
 import math
 import numpy as np 
-import matplotlib.pyplot as plt
 import warnings
 warnings.simplefilter("ignore", DeprecationWarning)
 
