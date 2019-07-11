@@ -1,11 +1,9 @@
 import sys
 import pyaudio
-import struct
 import aubio
 import audioop
 import math
 import numpy as np 
-import matplotlib.pyplot as plt
 import warnings
 warnings.simplefilter("ignore", DeprecationWarning)
 
@@ -72,6 +70,7 @@ for i in range(0, NUM_CHUNKS):
 '''
 
 staff = ""
+prev_note = "NONE"
 
 #while stream.is_active()
 while True:
@@ -97,11 +96,17 @@ while True:
         if(freq > 25.0):
            #call KeyChart
            idx = KeyChart.findNote(freq)
+           #note name
            nn = KeyChart.alternate(idx)
-           nnf = nn + " " 
-           # Adding the notes to the string
-           staff += nnf
-           
+
+           if (nn != prev_note):
+              #note name formated (added space)
+              prev_note = nn
+              nnf = nn + " " 
+              # Adding the notes to the string
+              staff += nnf
+        else:
+           prev_note = "NONE"
         
 
     except KeyboardInterrupt:
