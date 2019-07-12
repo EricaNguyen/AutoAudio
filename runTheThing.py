@@ -17,9 +17,9 @@ def record():
 		#T.insert(END,"Recording")
 		label.config(text="Recording")
 		temp = subprocess.call('cleaner.sh',shell = True)
-		#p = subprocess.call(['python', 'freqAnalyzer.py'])
+		p = subprocess.call(['python', 'freqAnalyzer.py'])
 		#test code, use instead of subprocess if thing don't work
-		p = subprocess.Popen(['python', 'runTheThing.py'])
+		#p = subprocess.Popen(['python', 'runTheThing.py'])
 	bool = 1
 	#print(fileName)
 	
