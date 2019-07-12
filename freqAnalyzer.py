@@ -217,13 +217,47 @@ for noteObj in my_notes:
 
 #NOW remove all recorded notes with duration of 1
 new_my_notes = []
+
+sumOfDuration = 0
+wholeNote = '1'
+halfNote = '2'
+eighthNote = '8'
+sixteenthNote = '16'
+
 #insert all with duration > 1 into new_my_notes
 for noteObj in my_notes:
    #also remove rests TODO remove that
    if noteObj.duration > 1 and noteObj.pitch != "REST":
+      sumOfDuration += noteObj.duration
       new_my_notes.append(noteObj)
-      noteHolder = noteObj.pitch + " "
-      newStaff += noteHolder
+      #noteHolder = noteObj.pitch + " "
+      #newStaff += noteHolder
+
+#Determining Note Type using holistic perspective
+quarterNote = sumOfDuration / len(new_my_notes)
+w = quarterNote * 4
+hf = quarterNote * 2
+e = quarterNote / 2
+s = quarterNote / 4
+for noteObj in new_my_notes: #Oh God im sorry
+    # Classifying Notes
+    if noteObj.duration <= s
+        noteObj.pitch = noteObj.pitch + sixteenthNote + " "
+        newStaff += noteObj.pitch
+    elif noteObj.duration > s and note.duration <= e
+        noteObj.pitch = noteObj.pitch + eighthNote + " "
+        newStaff += noteObj.pitch
+    elif noteObj.duration > e and note.duration <= q
+        noteObj.pitch = noteObj.pitch + halfNote + " "
+        newStaff += noteObj.pitch
+    elif noteObj.duration > e - 5 and noteObj.duration < e + 5:
+        noteObj.pitch = noteObj.pitch + eighthNote + " "
+        newStaff += noteObj.pitch
+    elif noteObj.duration > s - (10/4) and noteObj.duration < s + (10/4):
+        noteObj.pitch = noteObj.pitch + sixteenthNote + " "
+        newStaff += noteObj.pitch
+    
+
 
 #prints correctly
 print("after outlier removal")
@@ -238,6 +272,15 @@ print("newStaff: ", newStaff)   #without duration 1 notes
 staff = newStaff
 
 print("=====FINAL RESULT=====")
+#----------------------------------
+# Debugging
+print("sum", sumOfDuration)
+print("quarter", quarterNote)
+print("whole", w)
+print("halfnote", hf)
+print("eighth", e)
+print("sixteenth", s)
+#----------------------------------
 print("staff: ", staff)         #without duration 1 notes
 
 
