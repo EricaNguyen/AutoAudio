@@ -124,7 +124,7 @@ while True:
 
            #else if same note
            else:
-              #increment current note's duration
+              #increment current note's durationy
               my_notes[len(my_notes)-1].duration += 1              
               
         else:
@@ -150,7 +150,7 @@ for noteObj in my_notes:
 #remove all recorded notes with duration of 1
 new_my_notes = []
 for noteObj in my_notes:
-   if noteObj.duration != 1:
+   if noteObj.duration > 2:
       new_my_notes.append(noteObj)
       noteHolder = noteObj.pitch + " "
       newStaff += noteHolder
