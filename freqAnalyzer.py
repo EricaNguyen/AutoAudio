@@ -239,23 +239,39 @@ w = quarterNote * 4
 hf = quarterNote * 2
 e = quarterNote / 2
 s = quarterNote / 4
+
+noteDurKeys = (s, e, quarterNote, hf, w)
+
 for noteObj in new_my_notes: #Oh God im sorry
     # Classifying Notes
-    if noteObj.duration <= s
+    classified = KeyChart.findNoteDuration(noteObj.duration, noteDurKeys)
+    if classified == s:
         noteObj.pitch = noteObj.pitch + sixteenthNote + " "
-        newStaff += noteObj.pitch
-    elif noteObj.duration > s and note.duration <= e
+    elif classified == e:
         noteObj.pitch = noteObj.pitch + eighthNote + " "
-        newStaff += noteObj.pitch
-    elif noteObj.duration > e and note.duration <= q
+    elif classified == hf:
         noteObj.pitch = noteObj.pitch + halfNote + " "
-        newStaff += noteObj.pitch
-    elif noteObj.duration > e - 5 and noteObj.duration < e + 5:
-        noteObj.pitch = noteObj.pitch + eighthNote + " "
-        newStaff += noteObj.pitch
-    elif noteObj.duration > s - (10/4) and noteObj.duration < s + (10/4):
-        noteObj.pitch = noteObj.pitch + sixteenthNote + " "
-        newStaff += noteObj.pitch
+    elif classified == w:
+        noteObj.pitch = noteObj.pitch + wholeNote + " "
+    else:
+        noteObj.pitch = noteObj.pitch + " "
+    newStaff += noteObj.pitch
+
+    # if noteObj.duration <= s:
+    #     noteObj.pitch = noteObj.pitch + sixteenthNote + " "
+    #     newStaff += noteObj.pitch
+    # elif noteObj.duration > s and note.duration <= e:
+    #     noteObj.pitch = noteObj.pitch + eighthNote + " "
+    #     newStaff += noteObj.pitch
+    # elif noteObj.duration > e and note.duration <= q:
+    #     noteObj.pitch = noteObj.pitch + halfNote + " "
+    #     newStaff += noteObj.pitch
+    # elif noteObj.duration > e - 5 and noteObj.duration < e + 5:
+    #     noteObj.pitch = noteObj.pitch + eighthNote + " "
+    #     newStaff += noteObj.pitch
+    # elif noteObj.duration > s - (10/4) and noteObj.duration < s + (10/4):
+    #     noteObj.pitch = noteObj.pitch + sixteenthNote + " "
+    #     newStaff += noteObj.pitch
     
 
 
