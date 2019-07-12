@@ -152,7 +152,7 @@ def alternate(loc):
    octave = (loc / 12) + 1
 
    # 0 is notes before first C, 8 is highest note on piano (C)
-   if (noteName == "A" or noteName == "Bb" or noteName == "B"):
+   if (noteName == "A" or noteName == "Bf" or noteName == "B"):
       octave = octave - 1
 
    #convert to int (for printing)
@@ -191,8 +191,8 @@ def alternate(loc):
               lilyOc
 
 
-   pianoKey = noteName + sOctave
-   print(pianoKey)
+   #pianoKey = noteName + sOctave
+   #print(pianoKey)
    return noteName.lower() + lilyOc
 
    #print("Octave you are in: ")
