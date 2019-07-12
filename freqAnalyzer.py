@@ -120,7 +120,7 @@ for i in range(0, NUM_CHUNKS):
 '''
 
 staff = ""
-prev_note = "NONE"
+prev_note = ""
 my_notes = []
 
 #while stream.is_active()
@@ -141,10 +141,10 @@ while True:
         #print("{} / {}".format(freq, confidence))
 
 
-        # if note is too low, don't print
         if outputsink:
             outputsink(samples, len(samples))
         
+        # if note is too low, don't print
         if(freq > 25.0):
            #call KeyChart
            idx = KeyChart.findNote(freq)
@@ -171,9 +171,16 @@ while True:
               #increment current note's duration
               my_notes[len(my_notes)-1].duration += 1              
               
+        #else it's a rest
         else:
-           prev_note = "NONE"
-        
+           #if last note was not a rest
+           if prev_note != "REST":
+              prev_note = "REST"
+              newRest = Note("REST", 1)
+              my_notes.append(newRest)
+           #else last note was a rest
+           else: 
+              my_notes[len(my_notes)-1].duration += 1              
 
     except KeyboardInterrupt:
         print ("User Ctrl+C. Exiting...")
@@ -212,7 +219,8 @@ for noteObj in my_notes:
 new_my_notes = []
 #insert all with duration > 1 into new_my_notes
 for noteObj in my_notes:
-   if noteObj.duration > 1:
+   #also remove rests TODO remove that
+   if noteObj.duration > 1 and noteObj.pitch != "REST":
       new_my_notes.append(noteObj)
       noteHolder = noteObj.pitch + " "
       newStaff += noteHolder
