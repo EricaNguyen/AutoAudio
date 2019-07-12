@@ -10,6 +10,50 @@ warnings.simplefilter("ignore", DeprecationWarning)
 #linking together
 import KeyChart
 
+#-----------------------------------------------------------
+# LILYPOND SYNTAX (Taken from documentation)
+# For future use. Once we want to implement other properties
+# ♩ = note eg: a, b, c
+
+# Durations: note<duration> 
+#   ♩1 (Whole Note)
+#   ♩2 (Half Note)
+#   ♩8 (Eighth Note)
+#   ♩16 (Sixteenth Note)
+
+# Rests: r<duration>
+#   r1 (Whole Rest)
+#   r2 (Half Rest)
+#   r4 (Quarter Rest)
+#   r8 (Eighth Rest)
+#   r16 (Sixteenth Rest)
+#   r32 (x2)
+#   r64 (x2)
+#   r128 (x2)
+
+# Beams: note<duration>[note]
+#   ♩8[♩]
+
+# Articulations: note->
+#   ♩-> 
+
+# Staccato: note-.
+#   ♩-.
+
+# Dynamics: note\<dynamic>
+#   ♩\ppp
+#   ♩\ff
+# Crescendo: note\< note note\!
+#   ♩\< ♩ ♩\!
+# Decrescendo: note\> note note\!
+#   ♩/> ♩ ♩\!
+
+# Chords: < notes >
+#   <♩' ♩'>
+
+
+
+
 FRAME_SIZE = 1024 * 2
 FRAMES_PER_FFT = 16 # FFT = Fast Fourier Transform
 # FORMAT = pyaudio.paInt16 # Bytes per sample
@@ -185,19 +229,27 @@ language = r"\{} {}".format(l, lang)
 fh.write(version + "\n")
 fh.write(language + "\n")
 
-# Setting up header block
-title = r"""\header {
-  title = "My Song"
-  composer = "Username"
-  tagline = "Copyright: Username"
-}"""
+# Setting up header block (Inputs will be specified by GUI)
+fbrac = '{'
+bbrac = '}'
+songName = 'Song Name'
+composer = 'Your_Name' 
+tagLine = 'Copyright: ' + songName
+
+title2 = r"""\header {}
+    title = {}
+    composer = {}
+    tagline = {}
+{}""".format(fbrac, songName, composer, tagLine, bbrac)
+
 
 # Writing header into file
-fh.write(title + "\n")
+fh.write(title2 + "\n")
 
 #Setting up 
 relative = r"\{} {}".format("relative","c'")
 #fh.write(relative + "\n")
+#Will probably implement the use of another staff (bass clef)
 staffh = "{\n\n"
 staffh += r"  \clef treble " + staff + "\n"  
 staffh += "\n}\n"
