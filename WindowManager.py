@@ -12,6 +12,7 @@ bool = 0
 class App(tk.Frame):
     def __init__(self, master=None): #where info on what the window displays is defined
         super().__init__(master)
+        
         self.pack() #where user input and instructions go
 
         #makes a control panel within the window. We will use this to hold the buttons
@@ -23,23 +24,20 @@ class App(tk.Frame):
         button = Button(controlPanel, text="Start Recording", command = self.record)
         button.place(x=20, y=20, anchor="w")
         button2 = Button(controlPanel, text="Stop Recording", command = self.stopR)
-        button2.place(x=20, y=40, anchor="w")
+        button2.place(x=120, y=20, anchor="w")
         button3 = Button(controlPanel, text="Quit", command = self.quit)
-        button3.place(x=20, y=60, anchor="w")
-
-        #T = Text(master, height=1, width=20)
-        #T.pack();
-        #T.insert(END, "Put File Name Here")
+        button3.place(x=220, y=20, anchor="w")
 
         #Label of fileName entry field
         Label(controlPanel, text="Put Output Filename Here").place(x=20, y=90, anchor="w")
         e1 = Entry(controlPanel)
-        e1.place(x=20, y=80, anchor="w")
+        e1.place(x=180, y=100, anchor="w")
         #default name
         fileName = "NoteSheet";
+        
         #label for recording/not recording
         label = Label(controlPanel, text="Not Recording", font=("Helvetica", 12), fg="black")
-        label.place(x=20, y=100, anchor="w")
+        label.place(x=20, y=50, anchor="w")
         
         #makes an instructions panel within the window.
         instrPanel = LabelFrame(self, text = 'Instructions go here') 
@@ -73,7 +71,7 @@ class App(tk.Frame):
         #T.delete('1.0', END)
         #T.insert(END,"Recording")
         label = Label(self, text="Not Recording", font=("Helvetica", 12), fg="black")
-        label.place(x = 40, y = 120)
+        label.place(x = 20, y = 40)
         label.config(text="Recording")
         p = subprocess.Popen(['python', 'freqAnalyzer.py'])
         #test code, use instead of subprocess if thing don't work
@@ -89,7 +87,7 @@ class App(tk.Frame):
         #T.delete('1.0', END)
         #T.insert(END,"Not Recording")
         label = Label(self, text="Not Recording", font=("Helvetica", 12), fg="black")
-        label.place(x = 40, y = 120)
+        label.place(x = 20, y = 40)
         label.config(text="Not Recording")
         fileName = e1.get()
         #check if there was any recording done
