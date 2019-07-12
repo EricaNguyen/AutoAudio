@@ -138,6 +138,20 @@ def findNote(freq):
 #''' --------------------------------------------------------------------------
 # comment/uncomment this block for alternate algorithm
 
+def findNoteDuration(duration, myList):
+    for x in range(len(myList)-2):
+        #this loop should go from 0 to 86
+        #that is just how Python works
+        avg = myList[x] + myList[x+1]
+        avg = avg / 2
+        if duration < avg:
+            #print("index: ")
+            #print(x)
+            return myList[x]
+    #print("index: ")
+    #print("87")
+    return myList[(len(myList))-1]
+
 # another tuple that stores the note names
 notes = ("A", "Bf", "B", "C", "Cs", "D", "Ef", "E", "F", "Fs", "G", "Gs")
 
