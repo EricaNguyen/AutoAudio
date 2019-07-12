@@ -168,7 +168,7 @@ while True:
 
            #else if same note
            else:
-              #increment current note's durationy
+              #increment current note's duration
               my_notes[len(my_notes)-1].duration += 1              
               
         else:
@@ -187,20 +187,38 @@ print("* RECORDING STOPPED")
 newStaff = ""
 
 #print all recorded notes (shortened)
-print("before outlier cleanup")
+print("before joining")
 for noteObj in my_notes:
    noteObj.printNote()
 
-#remove all recorded notes with duration of 1
-new_my_notes = []
+#New algorithm:
+#first loop through and join split up notes
+for i in range(len(my_notes)):
+    #avoid segfault
+    if i > 0 and i < len(my_notes)-1 and my_notes[i].duration == 1:
+       #check if other sies of duration 1 note are same pitch
+       if my_notes[i-1].pitch == my_notes[i+1].pitch:
+          #add durations together and delete one
+          my_notes[i-1].duration += my_notes[i+1].duration
+          del my_notes[i+1]
+
+
+#prints correctly
+print("after joining ||| before outlier removal")
 for noteObj in my_notes:
-   if noteObj.duration > 2:
+   noteObj.printNote()
+
+#NOW remove all recorded notes with duration of 1
+new_my_notes = []
+#insert all with duration > 1 into new_my_notes
+for noteObj in my_notes:
+   if noteObj.duration > 1:
       new_my_notes.append(noteObj)
       noteHolder = noteObj.pitch + " "
       newStaff += noteHolder
 
 #prints correctly
-print("after outlier cleanup")
+print("after outlier removal")
 for noteObj in new_my_notes:
    noteObj.printNote()
 
@@ -210,6 +228,8 @@ print("newStaff: ", newStaff)   #without duration 1 notes
 
 #copy newStaff into staff for convenience
 staff = newStaff
+
+print("=====FINAL RESULT=====")
 print("staff: ", staff)         #without duration 1 notes
 
 
