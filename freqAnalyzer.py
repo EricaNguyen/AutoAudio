@@ -23,6 +23,14 @@ RECORD_SECONDS = 5
 TOLERANCE = 0.8
 WAVE_OUTPUT_NAME = "def_output.wav"
 
+class Note(object):
+    def __init__(self, pitch, duration):
+        self.pitch = pitch
+        self.duration = duration
+
+    def printNote(self):
+        print("Pitch: ", self.pitch, "| Duration :", self.duration)
+
 # I don't really understand FFT 
 '''
 SAMPLES_PER_FFT = FRAME_SIZE * FRAMES_PER_FFT
@@ -69,6 +77,7 @@ for i in range(0, NUM_CHUNKS):
 
 staff = ""
 prev_note = "NONE"
+my_notes = []
 
 #while stream.is_active()
 while True:
@@ -87,6 +96,7 @@ while True:
         #uncomment to print original stuff
         #print("{} / {}".format(freq, confidence))
 
+
         # if note is too low, don't print
         if outputsink:
             outputsink(samples, len(samples))
@@ -96,13 +106,27 @@ while True:
            idx = KeyChart.findNote(freq)
            #note name
            nn = KeyChart.alternate(idx)
+           print("all :", nn)
 
+           #if new note
            if (nn != prev_note):
-              #note name formated (added space)
               prev_note = nn
+              
+              #create new note
+              newNote = Note(nn, 1)
+              #append to list of notes
+              my_notes.append(newNote)
+              #note name formated (added space)
               nnf = nn + " " 
               # Adding the notes to the string
               staff += nnf
+#              print(nn)
+
+           #else if same note
+           else:
+              #increment current note's duration
+              my_notes[len(my_notes)-1].duration += 1              
+              
         else:
            prev_note = "NONE"
         
@@ -112,6 +136,38 @@ while True:
         break
 
 print("* RECORDING STOPPED")
+
+
+#CODE TO REMOVE OUTLIER FREQUENCIES
+
+newStaff = ""
+
+#print all recorded notes (shortened)
+print("before outlier cleanup")
+for noteObj in my_notes:
+   noteObj.printNote()
+
+#remove all recorded notes with duration of 1
+new_my_notes = []
+for noteObj in my_notes:
+   if noteObj.duration != 1:
+      new_my_notes.append(noteObj)
+      noteHolder = noteObj.pitch + " "
+      newStaff += noteHolder
+
+#prints correctly
+print("after outlier cleanup")
+for noteObj in new_my_notes:
+   noteObj.printNote()
+
+#following is correct
+print("staff: ", staff)         #with duration 1 notes
+print("newStaff: ", newStaff)   #without duration 1 notes
+
+#copy newStaff into staff for convenience
+staff = newStaff
+print("staff: ", staff)         #without duration 1 notes
+
 
 # Open the file
 fh = open('output.ly', "w")

@@ -192,7 +192,7 @@ def alternate(loc):
 
 
    pianoKey = noteName + sOctave
-   print(pianoKey)
+   #print(pianoKey)
    return noteName.lower() + lilyOc
 
    #print("Octave you are in: ")
