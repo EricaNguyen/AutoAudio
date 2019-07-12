@@ -232,15 +232,19 @@ fh.write(language + "\n")
 # Setting up header block (Inputs will be specified by GUI)
 fbrac = '{'
 bbrac = '}'
-songName = 'Song Name'
-composer = 'Your_Name' 
-tagLine = 'Copyright: ' + songName
+comm = '"'
+songName = '"Song Name"'
+composer = 'Username' 
+tagLine = '"Copyright: '
 
 title2 = r"""\header {}
     title = {}
-    composer = {}
-    tagline = {}
-{}""".format(fbrac, songName, composer, tagLine, bbrac)
+    composer = {}{}{}
+    tagline = {}{}{}
+{}""".format(fbrac, songName, 
+             comm, composer, comm, 
+             tagLine, composer, comm,
+             bbrac)
 
 
 # Writing header into file
