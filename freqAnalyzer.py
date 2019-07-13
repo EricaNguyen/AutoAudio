@@ -138,10 +138,18 @@ while True:
         #IT IS ALSO CONVERTED INTO DECIBEL 
         #I commented it out originally because the outputs didn't make sense
         #Maybe you can make some sense out of it
-        
-        #rms = audioop.rms(data,1)
+
+        rms = audioop.rms(data,2)
         #decibel = 20 * np.log10(rms) #dB = 20 * log10(Amp)
         #print(decibel)
+
+        #aubio:
+        # aubio.level_lin(fvec(1024))
+        amp = abs(aubio.db_spl(samples)) 
+        #Ive been testing it and it seems like 
+        #it's outputting negative decibels
+        #the closer to 0, the louder, which doesn't make sense
+        
         #uncomment to print original stuff
         #print("{} / {}".format(freq, confidence))
 
@@ -155,7 +163,7 @@ while True:
            idx = KeyChart.findNote(freq)
            #note name
            nn = KeyChart.alternate(idx)
-           print("all :", nn)
+           print("all :", nn, "| aubio", amp)
 
            #if new note
            if (nn != prev_note):
