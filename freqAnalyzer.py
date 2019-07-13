@@ -194,7 +194,7 @@ while True:
            #if last note was not a rest
            if prev_note != "REST":
               prev_note = "REST"
-              newRest = Note("REST", 1, 'TBD', 0)
+              newRest = Note("REST", 1, 'TBD', linear)
               my_notes.append(newRest)
            #else last note was a rest
            else: 
@@ -239,6 +239,7 @@ new_my_notes = []
 sumOfDuration = 0
 wholeNote = '1'
 halfNote = '2'
+quarterNote = '4'
 eighthNote = '8'
 sixteenthNote = '16'
 
@@ -252,16 +253,23 @@ for noteObj in my_notes:
       #newStaff += noteHolder
 
 #Determining Note Type using holistic perspective
-quarterNote = sumOfDuration / len(new_my_notes)
-w = quarterNote * 4
-hf = quarterNote * 2
-e = quarterNote / 2
-s = quarterNote / 4
 
-noteDurKeys = (s, e, quarterNote, hf, w)
+#Quarter Note
+q = sumOfDuration / len(new_my_notes)
+#Whole Note
+w = q * 4
+#Half Note
+hf = q * 2
+#Eighth Note
+e = q / 2
+#Sixteenth Note
+s = q / 4
 
-for noteObj in new_my_notes: #Oh God im sorry
-    # Classifying Notes
+#Note Duration List
+noteDurKeys = (s, e, q, hf, w)
+
+for noteObj in new_my_notes: 
+    # Classifying Note Durations
     classified = KeyChart.findNoteDuration(noteObj.duration, noteDurKeys)
     noteObj.durationNote = classified
     if classified == s:
@@ -273,27 +281,9 @@ for noteObj in new_my_notes: #Oh God im sorry
     elif classified == w:
         noteObj.pitch = noteObj.pitch + wholeNote + " "
     else:
-        noteObj.pitch = noteObj.pitch + " "
+        noteObj.pitch = noteObj.pitch + quarterNote + " "
     newStaff += noteObj.pitch
-
-    # if noteObj.duration <= s:
-    #     noteObj.pitch = noteObj.pitch + sixteenthNote + " "
-    #     newStaff += noteObj.pitch
-    # elif noteObj.duration > s and note.duration <= e:
-    #     noteObj.pitch = noteObj.pitch + eighthNote + " "
-    #     newStaff += noteObj.pitch
-    # elif noteObj.duration > e and note.duration <= q:
-    #     noteObj.pitch = noteObj.pitch + halfNote + " "
-    #     newStaff += noteObj.pitch
-    # elif noteObj.duration > e - 5 and noteObj.duration < e + 5:
-    #     noteObj.pitch = noteObj.pitch + eighthNote + " "
-    #     newStaff += noteObj.pitch
-    # elif noteObj.duration > s - (10/4) and noteObj.duration < s + (10/4):
-    #     noteObj.pitch = noteObj.pitch + sixteenthNote + " "
-    #     newStaff += noteObj.pitch
     
-
-
 #prints correctly
 print("after outlier removal")
 for noteObj in new_my_notes:
@@ -310,7 +300,7 @@ print("=====FINAL RESULT=====")
 #----------------------------------
 # Debugging
 print("sum", sumOfDuration)
-print("quarter", quarterNote)
+print("quarter", q)
 print("whole", w)
 print("halfnote", hf)
 print("eighth", e)
@@ -360,9 +350,10 @@ fh.write(title2 + "\n")
 relative = r"\{} {}".format("relative","c'")
 #fh.write(relative + "\n")
 #Will probably implement the use of another staff (bass clef)
-staffh = "{\n\n"
-staffh += r"  \clef treble " + staff + "\n"  
-staffh += "\n}\n"
+staffh = "{\n\\new PianoStaff << \n"
+staffh += "  \\new Staff { \clef treble " + staff + "}\n"
+staffh += "  \\new Staff { \clef bass " + staff + "}\n"  #r prefix messed it up
+staffh += ">>\n}\n"
 
 fh.write(staffh + "\n")
 
