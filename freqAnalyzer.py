@@ -68,12 +68,14 @@ TOLERANCE = 0.8
 WAVE_OUTPUT_NAME = "def_output.wav"
 
 class Note(object):
-    def __init__(self, pitch, duration):
+    def __init__(self, pitch, duration, durationNote, soundPressureLevel):
         self.pitch = pitch
         self.duration = duration
+        self.soundPressureLevel = soundPressureLevel
+        self.durationNote = durationNote
 
     def printNote(self):
-        print("Pitch: ", self.pitch, "| Duration :", self.duration)
+        print("Pitch: ", self.pitch, "| Duration :", self.duration, "| Duration Note:", self.durationNote, "| Sound Pressure Level:", self.soundPressureLevel)
 
 # I don't really understand FFT 
 '''
@@ -132,11 +134,27 @@ while True:
 
         freq = fDetection(samples)[0]
         confidence = fDetection.get_confidence()
-        #volume = np.sum(samples**2)/len(samples)
-        #f_volume = "{:.6f}".format(volume)
-        #rms = audioop.rms(data,1)
+        fConfidence = '{:.2f}'.format(confidence)
+        
+        # if confidence < 0.5:
+        #     freq = 0
+        
+        #MAX THE VARIABLE rms HAS THE AMPLITUDE
+        #IT IS ALSO CONVERTED INTO DECIBEL 
+        #I commented it out originally because the outputs didn't make sense
+        #Maybe you can make some sense out of it
+
+        rms = audioop.rms(data,2)
         #decibel = 20 * np.log10(rms) #dB = 20 * log10(Amp)
         #print(decibel)
+
+        #aubio:
+        linear = '{:.4f}'.format(aubio.level_lin(samples)) #seems to make more sense
+        decibels = '{:.4f}'.format(aubio.db_spl(samples))
+        #Ive been testing it and it seems like 
+        #it's outputting negative decibels
+        #the closer to 0, the louder, which doesn't make sense
+        
         #uncomment to print original stuff
         #print("{} / {}".format(freq, confidence))
 
@@ -150,14 +168,14 @@ while True:
            idx = KeyChart.findNote(freq)
            #note name
            nn = KeyChart.alternate(idx)
-           print("all :", nn)
+           print("all :", nn, "| confidence", fConfidence)
 
            #if new note
            if (nn != prev_note):
               prev_note = nn
               
               #create new note
-              newNote = Note(nn, 1)
+              newNote = Note(nn, 1, 'TBD', linear)
               #append to list of notes
               my_notes.append(newNote)
               #note name formated (added space)
@@ -176,7 +194,7 @@ while True:
            #if last note was not a rest
            if prev_note != "REST":
               prev_note = "REST"
-              newRest = Note("REST", 1)
+              newRest = Note("REST", 1, 'TBD', 0)
               my_notes.append(newRest)
            #else last note was a rest
            else: 
@@ -245,6 +263,7 @@ noteDurKeys = (s, e, quarterNote, hf, w)
 for noteObj in new_my_notes: #Oh God im sorry
     # Classifying Notes
     classified = KeyChart.findNoteDuration(noteObj.duration, noteDurKeys)
+    noteObj.durationNote = classified
     if classified == s:
         noteObj.pitch = noteObj.pitch + sixteenthNote + " "
     elif classified == e:
