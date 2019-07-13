@@ -68,13 +68,14 @@ TOLERANCE = 0.8
 WAVE_OUTPUT_NAME = "def_output.wav"
 
 class Note(object):
-    def __init__(self, pitch, duration, durationNote):
+    def __init__(self, pitch, duration, durationNote, soundPressureLevel):
         self.pitch = pitch
         self.duration = duration
+        self.soundPressureLevel = soundPressureLevel
         self.durationNote = durationNote
 
     def printNote(self):
-        print("Pitch: ", self.pitch, "| Duration :", self.duration, "| Duration Note:", self.durationNote)
+        print("Pitch: ", self.pitch, "| Duration :", self.duration, "| Duration Note:", self.durationNote, "| Sound Pressure Level:", self.soundPressureLevel)
 
 # I don't really understand FFT 
 '''
@@ -148,7 +149,7 @@ while True:
         #print(decibel)
 
         #aubio:
-        linear = '{:.4f}'.format(aubio.level_lin(samples))
+        linear = '{:.4f}'.format(aubio.level_lin(samples)) #seems to make more sense
         decibels = '{:.4f}'.format(aubio.db_spl(samples))
         #Ive been testing it and it seems like 
         #it's outputting negative decibels
@@ -167,14 +168,14 @@ while True:
            idx = KeyChart.findNote(freq)
            #note name
            nn = KeyChart.alternate(idx)
-           print("all :", nn, "| aubio", linear, "| decibels", decibels, "| confidence", fConfidence)
+           print("all :", nn, "| confidence", fConfidence)
 
            #if new note
            if (nn != prev_note):
               prev_note = nn
               
               #create new note
-              newNote = Note(nn, 1, '')
+              newNote = Note(nn, 1, 'TBD', linear)
               #append to list of notes
               my_notes.append(newNote)
               #note name formated (added space)
@@ -193,7 +194,7 @@ while True:
            #if last note was not a rest
            if prev_note != "REST":
               prev_note = "REST"
-              newRest = Note("REST", 1, '')
+              newRest = Note("REST", 1, 'TBD', 0)
               my_notes.append(newRest)
            #else last note was a rest
            else: 
