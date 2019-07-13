@@ -133,6 +133,10 @@ while True:
 
         freq = fDetection(samples)[0]
         confidence = fDetection.get_confidence()
+        fConfidence = '{:.2f}'.format(confidence)
+        
+        if confidence < 0.5:
+            freq = 0
         
         #MAX THE VARIABLE rms HAS THE AMPLITUDE
         #IT IS ALSO CONVERTED INTO DECIBEL 
@@ -144,8 +148,8 @@ while True:
         #print(decibel)
 
         #aubio:
-        # aubio.level_lin(fvec(1024))
-        amp = abs(aubio.db_spl(samples)) 
+        amp = '{:.4f}'.format(aubio.level_lin(samples))
+        decibels = '{:.4f}'.format(aubio.db_spl(samples))
         #Ive been testing it and it seems like 
         #it's outputting negative decibels
         #the closer to 0, the louder, which doesn't make sense
@@ -163,7 +167,7 @@ while True:
            idx = KeyChart.findNote(freq)
            #note name
            nn = KeyChart.alternate(idx)
-           print("all :", nn, "| aubio", amp)
+           print("all :", nn, "| aubio", amp, "| decibels", decibels, "| confidence", fConfidence)
 
            #if new note
            if (nn != prev_note):
