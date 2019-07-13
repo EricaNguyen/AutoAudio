@@ -7,7 +7,7 @@ import subprocess
 #subprocess that starts everything
 p = subprocess.Popen(['head', 'README.txt'])
 #command definitions
-bool = 0;
+bool = 0
 #record button functions, aka button
 def record():
 	global p
