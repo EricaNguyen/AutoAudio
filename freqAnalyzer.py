@@ -209,7 +209,8 @@ print("* RECORDING STOPPED")
 
 #CODE TO REMOVE OUTLIER FREQUENCIES
 
-newStaff = ""
+newStaffu = ""
+newStaffl = ""
 
 #print all recorded notes (shortened)
 print("before joining")
@@ -243,19 +244,20 @@ quarterNote = '4'
 eighthNote = '8'
 sixteenthNote = '16'
 
+rest = 'r'
+
 #insert all with duration > 1 into new_my_notes
 for noteObj in my_notes:
    #also remove rests TODO remove that
    if noteObj.duration > 1 and noteObj.pitch != "REST":
       sumOfDuration += noteObj.duration
       new_my_notes.append(noteObj)
-      #noteHolder = noteObj.pitch + " "
-      #newStaff += noteHolder
 
 #Determining Note Type using holistic perspective
 
 #Quarter Note
 q = sumOfDuration / len(new_my_notes)
+
 #Whole Note
 w = q * 4
 #Half Note
@@ -268,33 +270,67 @@ s = q / 4
 #Note Duration List
 noteDurKeys = (s, e, q, hf, w)
 
+def whichStaff(myString):
+    commCount = 0
+    aposCount = 0
+
+    for c in myString:
+        if c == ',':
+            commCount += 1
+            break
+        if c == "'":
+            aposCount += 1
+            break
+    return (commCount, aposCount)
+
+def getNoteType(myInt):
+    typeN = ''
+    if myInt == s:
+        typeN += sixteenthNote
+    elif myInt == e:
+        typeN += eighthNote
+    elif myInt == hf:
+        typeN += halfNote
+    elif myInt == w:
+        typeN += wholeNote
+    else:
+        typeN += quarterNote
+    return typeN
+
 for noteObj in new_my_notes: 
     # Classifying Note Durations
     classified = KeyChart.findNoteDuration(noteObj.duration, noteDurKeys)
     noteObj.durationNote = classified
-    if classified == s:
-        noteObj.pitch = noteObj.pitch + sixteenthNote + " "
-    elif classified == e:
-        noteObj.pitch = noteObj.pitch + eighthNote + " "
-    elif classified == hf:
-        noteObj.pitch = noteObj.pitch + halfNote + " "
-    elif classified == w:
-        noteObj.pitch = noteObj.pitch + wholeNote + " "
+    noteObj.pitch = noteObj.pitch + getNoteType(classified) + " "
+
+    #Spliting into upper and lower staff
+    #If note is Octave 3 or lower
+    if whichStaff(noteObj.pitch)[0] == 1 or whichStaff(noteObj.pitch)[1] + whichStaff(noteObj.pitch)[0] == 0:
+        #Append note to upper staff
+        newStaffl += noteObj.pitch
+        #Otherwise append a rest to lower staff with corresponding duration
+        newStaffu += rest + getNoteType(classified) + " "
     else:
-        noteObj.pitch = noteObj.pitch + quarterNote + " "
-    newStaff += noteObj.pitch
+        #Append note to lower staff
+        newStaffu += noteObj.pitch
+        #Or rest
+        newStaffl += rest + getNoteType(classified) + " "
     
+
+
 #prints correctly
-print("after outlier removal")
+print("after outlier removal and classifying duration")
 for noteObj in new_my_notes:
    noteObj.printNote()
 
 #following is correct
 print("staff: ", staff)         #with duration 1 notes
-print("newStaff: ", newStaff)   #without duration 1 notes
+print("newStaffu: ", newStaffu)   #without duration 1 notes
+print("newStaffl: ", newStaffl)
 
 #copy newStaff into staff for convenience
-staff = newStaff
+staffu = newStaffu
+staffl = newStaffl
 
 print("=====FINAL RESULT=====")
 #----------------------------------
@@ -306,7 +342,8 @@ print("halfnote", hf)
 print("eighth", e)
 print("sixteenth", s)
 #----------------------------------
-print("staff: ", staff)         #without duration 1 notes
+print("staffu: ", staffu)         #without duration 1 notes
+print("staffl: ", staffl)
 
 
 # Open the file
@@ -351,8 +388,8 @@ relative = r"\{} {}".format("relative","c'")
 #fh.write(relative + "\n")
 #Will probably implement the use of another staff (bass clef)
 staffh = "{\n\\new PianoStaff << \n"
-staffh += "  \\new Staff { \clef treble " + staff + "}\n"
-staffh += "  \\new Staff { \clef bass " + staff + "}\n"  #r prefix messed it up
+staffh += "  \\new Staff { \clef treble " + staffu + "}\n"
+staffh += "  \\new Staff { \clef bass " + staffl + "}\n"  #r prefix messed it up
 staffh += ">>\n}\n"
 
 fh.write(staffh + "\n")
