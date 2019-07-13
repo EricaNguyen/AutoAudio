@@ -10,6 +10,7 @@ import subprocess
 bool = 0
 
 class App(tk.Frame):
+	
     def __init__(self, master=None): #where info on what the window displays is defined
         super().__init__(master)
         
