@@ -133,8 +133,12 @@ while True:
 
         freq = fDetection(samples)[0]
         confidence = fDetection.get_confidence()
-        #volume = np.sum(samples**2)/len(samples)
-        #f_volume = "{:.6f}".format(volume)
+        
+        #MAX THE VARIABLE rms HAS THE AMPLITUDE
+        #IT IS ALSO CONVERTED INTO DECIBEL 
+        #I commented it out originally because the outputs didn't make sense
+        #Maybe you can make some sense out of it
+        
         #rms = audioop.rms(data,1)
         #decibel = 20 * np.log10(rms) #dB = 20 * log10(Amp)
         #print(decibel)
