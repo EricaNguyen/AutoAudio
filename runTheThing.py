@@ -17,6 +17,16 @@ def record():
 		#T.insert(END,"Recording")
 		label.config(text="Recording")
 		temp = subprocess.call('cleaner.sh',shell = True)
+		#time counter
+		i = 0
+		#test code
+		#print(temp)
+		#while temp isn't done, wait until it's done
+		while temp != 0:
+			i = i+1
+			if i>5000:
+				temp.terminate()
+				break
 		p = subprocess.call(['python', 'freqAnalyzer.py'])
 		#test code, use instead of subprocess if thing don't work
 		#p = subprocess.Popen(['python', 'runTheThing.py'])
