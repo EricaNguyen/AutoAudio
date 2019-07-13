@@ -68,12 +68,13 @@ TOLERANCE = 0.8
 WAVE_OUTPUT_NAME = "def_output.wav"
 
 class Note(object):
-    def __init__(self, pitch, duration):
+    def __init__(self, pitch, duration, durationNote):
         self.pitch = pitch
         self.duration = duration
+        self.durationNote = durationNote
 
     def printNote(self):
-        print("Pitch: ", self.pitch, "| Duration :", self.duration)
+        print("Pitch: ", self.pitch, "| Duration :", self.duration, "| Duration Note:", self.durationNote)
 
 # I don't really understand FFT 
 '''
@@ -157,7 +158,7 @@ while True:
               prev_note = nn
               
               #create new note
-              newNote = Note(nn, 1)
+              newNote = Note(nn, 1, '')
               #append to list of notes
               my_notes.append(newNote)
               #note name formated (added space)
@@ -176,7 +177,7 @@ while True:
            #if last note was not a rest
            if prev_note != "REST":
               prev_note = "REST"
-              newRest = Note("REST", 1)
+              newRest = Note("REST", 1, '')
               my_notes.append(newRest)
            #else last note was a rest
            else: 
@@ -245,6 +246,7 @@ noteDurKeys = (s, e, quarterNote, hf, w)
 for noteObj in new_my_notes: #Oh God im sorry
     # Classifying Notes
     classified = KeyChart.findNoteDuration(noteObj.duration, noteDurKeys)
+    noteObj.durationNote = classified
     if classified == s:
         noteObj.pitch = noteObj.pitch + sixteenthNote + " "
     elif classified == e:

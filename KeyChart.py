@@ -137,9 +137,10 @@ def findNote(freq):
 
 #''' --------------------------------------------------------------------------
 # comment/uncomment this block for alternate algorithm
+# (sixteenth, eighth, quarterNote, halfnote, wholenote)
 
 def findNoteDuration(duration, myList):
-    for x in range(len(myList)-2):
+    for x in range(len(myList)-1):
         #this loop should go from 0 to 86
         #that is just how Python works
         avg = myList[x] + myList[x+1]
