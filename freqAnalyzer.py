@@ -68,14 +68,14 @@ TOLERANCE = 0.8
 WAVE_OUTPUT_NAME = "def_output.wav"
 
 class Note(object):
-    def __init__(self, pitch, duration, durationNote, soundPressureLevel):
+    def __init__(self, pitch, duration, durationLength, soundPressureLevel):
         self.pitch = pitch
         self.duration = duration
         self.soundPressureLevel = soundPressureLevel
-        self.durationNote = durationNote
+        self.durationLength = durationLength
 
     def printNote(self):
-        print("Pitch: ", self.pitch, "| Duration :", self.duration, "| Duration Note:", self.durationNote, "| Sound Pressure Level:", self.soundPressureLevel)
+        print("Pitch: ", self.pitch, "| Duration :", self.duration, "| Duration Note:", self.durationLength, "| Sound Pressure Level:", self.soundPressureLevel)
 
 # I don't really understand FFT 
 '''
@@ -236,6 +236,9 @@ new_my_notes = []
 
 #LilyPond durations
 sumOfDuration = 0
+lengthCounter = 0
+#Assuming measures are 4/4
+measureLength = 4
 
 wholeNote = '1'
 halfNote = '2'
@@ -244,6 +247,7 @@ eighthNote = '8'
 sixteenthNote = '16'
 
 rest = 'r'
+bar = '| '
 
 #insert all with duration > 1 into new_my_notes
 for noteObj in my_notes:
@@ -265,13 +269,18 @@ e = q / 2
 #Sixteenth Note
 s = q / 4
 
+sixteenthNoteLength = .25
+eighthNoteLength = .5
+quarterNoteLength = 1
+halfNoteLength = 2
+wholeNoteLength = 4
+
 #Note Duration List
 noteDurKeys = (s, e, q, hf, w)
 
 def whichStaff(myString):
     commCount = 0
     aposCount = 0
-
     for c in myString:
         if c == ',':
             commCount += 1
@@ -283,6 +292,7 @@ def whichStaff(myString):
 
 def getNoteType(myInt):
     typeN = ''
+    
     if myInt == s:
         typeN += sixteenthNote
     elif myInt == e:
@@ -295,30 +305,102 @@ def getNoteType(myInt):
         typeN += quarterNote
     return typeN
 
+def getNoteLength(myInt):
+    noteLength = 0
+    if myInt == int(sixteenthNote):
+        noteLength = .25
+    elif myInt == int(eighthNote):
+        noteLength = .5
+    elif myInt == int(quarterNote):
+        noteLength = 1
+    elif myInt == int(halfNote):
+        noteLength = 2
+    else:
+        noteLength = 4
+    return noteLength
+
 for noteObj in new_my_notes: 
     # Classifying Note Durations
     classified = KeyChart.findNoteDuration(noteObj.duration, noteDurKeys)
-    noteObj.durationNote = classified
     pitch = noteObj.pitch
-    pitch = pitch + getNoteType(classified) + " "
+
+    # Measure Validity Check
+    # setting the duration length of the note
+    noteObj.durationLength = getNoteLength(int(getNoteType(classified)))
+    lengthCounter += noteObj.durationLength
+    
+    fullMeasure = lengthCounter == measureLength
+    exceedingMeasure = lengthCounter > measureLength
+    insufficientMeasure = lengthCounter < measureLength
 
     #if getNoteType(classified) == wholeNote and noteObj.duration > w + hf:
         
     #Spliting into upper and lower staff
-    #If note is Octave 3 or lower
     numOfApos = whichStaff(pitch)[1]
     numOfComm = whichStaff(pitch)[0]
 
+    #If note is Octave 3 or lower
     if numOfComm == 1 or numOfApos + numOfComm == 0:
-        #Append note to lower staff
-        newStaffl += pitch
-        #Otherwise append a rest to upper staff with corresponding duration
-        newStaffu += rest + getNoteType(classified) + " "
+        if fullMeasure:
+            pitch = pitch + getNoteType(classified) + " "
+            #Append note to lower staff
+            newStaffl += pitch
+            #Otherwise append a rest to upper staff with corresponding duration
+            newStaffu += rest + getNoteType(classified) + " "
+            #Append the bar to both staffs
+            newStaffl += bar
+            newStaffu += bar
+            lengthCounter = 0
+        elif exceedingMeasure:
+            # Split the note apart, in half I guess
+            # And append both, tied together
+            classified = classified / 2
+            pitchTied = pitch + getNoteType(classified) + "~ "
+            newStaffl += pitchTied
+            newStaffl += bar
+            newStaffl += pitch
+
+            newStaffu += rest + getNoteType(classified) + " "
+            newStaffu += bar
+            newStaffu += rest + getNoteType(classified) + " "
+            lengthCounter = lengthCounter - measureLength
+        else:
+            pitch = pitch + getNoteType(classified) + " "
+            newStaffl += pitch
+            newStaffu += rest + getNoteType(classified) + " "
+
+    #If note is Octave 4 or higher
     else:
         #Append note to upper staff
-        newStaffu += pitch
-        #Or rest
-        newStaffl += rest + getNoteType(classified) + " "
+        if fullMeasure:
+            pitch = pitch + getNoteType(classified) + " "
+            #Append note to lower staff
+            newStaffu += pitch
+            #Otherwise append a rest to upper staff with corresponding duration
+            newStaffl += rest + getNoteType(classified) + " "
+            #Append the bar to both staffs
+            newStaffu += bar
+            newStaffl += bar
+            lengthCounter = 0
+        elif exceedingMeasure:
+            # Split the note apart, in half I guess
+            # And append both, tied together
+            classified = classified / 2
+            pitchTied = pitch + getNoteType(classified) + "~ "
+            newStaffu += pitchTied
+            newStaffu += bar
+            newStaffu += pitch + " "
+
+            newStaffl += rest + getNoteType(classified) + " "
+            newStaffl += bar
+            newStaffl += rest + getNoteType(classified) + " "
+            lengthCounter = lengthCounter - measureLength
+        else:
+            pitch = pitch + getNoteType(classified) + " "
+            newStaffu += pitch
+            newStaffl += rest + getNoteType(classified) + " "
+
+    
     
 
 
