@@ -107,9 +107,6 @@ fDetection.set_unit("Hz")
 fDetection.set_silence(-40)
 fDetection.set_tolerance(TOLERANCE)
 
-
-
-
 print("* RECORDING")
 
 #NUM_CHUNKS = int((RATE / CHUNK) * RECORD_SECONDS)
@@ -182,7 +179,7 @@ while True:
               nnf = nn + " " 
               # Adding the notes to the string
               staff += nnf
-#              print(nn)
+              #print(nn)
 
            #else if same note
            else:
@@ -237,7 +234,9 @@ for noteObj in my_notes:
 #NOW remove all recorded notes with duration of 1
 new_my_notes = []
 
+#LilyPond durations
 sumOfDuration = 0
+
 wholeNote = '1'
 halfNote = '2'
 quarterNote = '4'
@@ -257,7 +256,6 @@ for noteObj in my_notes:
 
 #Quarter Note
 q = sumOfDuration / len(new_my_notes)
-
 #Whole Note
 w = q * 4
 #Half Note
@@ -303,15 +301,20 @@ for noteObj in new_my_notes:
     noteObj.durationNote = classified
     noteObj.pitch = noteObj.pitch + getNoteType(classified) + " "
 
+    #if getNoteType(classified) == wholeNote and noteObj.duration > w + hf:
+        
     #Spliting into upper and lower staff
     #If note is Octave 3 or lower
-    if whichStaff(noteObj.pitch)[0] == 1 or whichStaff(noteObj.pitch)[1] + whichStaff(noteObj.pitch)[0] == 0:
-        #Append note to upper staff
+    numOfApos = whichStaff(noteObj.pitch)[1]
+    numOfComm = whichStaff(noteObj.pitch)[0]
+
+    if numOfComm == 1 or numOfApos + numOfComm == 0:
+        #Append note to lower staff
         newStaffl += noteObj.pitch
-        #Otherwise append a rest to lower staff with corresponding duration
+        #Otherwise append a rest to upper staff with corresponding duration
         newStaffu += rest + getNoteType(classified) + " "
     else:
-        #Append note to lower staff
+        #Append note to upper staff
         newStaffu += noteObj.pitch
         #Or rest
         newStaffl += rest + getNoteType(classified) + " "
@@ -325,7 +328,7 @@ for noteObj in new_my_notes:
 
 #following is correct
 print("staff: ", staff)         #with duration 1 notes
-print("newStaffu: ", newStaffu)   #without duration 1 notes
+print("newStaffu: ", newStaffu)   #staffs without duration 1 notes
 print("newStaffl: ", newStaffl)
 
 #copy newStaff into staff for convenience
@@ -388,8 +391,8 @@ relative = r"\{} {}".format("relative","c'")
 #fh.write(relative + "\n")
 #Will probably implement the use of another staff (bass clef)
 staffh = "{\n\\new PianoStaff << \n"
-staffh += "  \\new Staff { \clef treble " + staffu + "}\n"
-staffh += "  \\new Staff { \clef bass " + staffl + "}\n"  #r prefix messed it up
+staffh += "  \\new Staff { \clef treble " + staffu + r'\bar "|."' + "}\n"
+staffh += "  \\new Staff { \clef bass " + staffl + r'\bar "|."' + "}\n"  #r prefix messed it up
 staffh += ">>\n}\n"
 
 fh.write(staffh + "\n")
