@@ -18,19 +18,19 @@ class App(tk.Frame): #class for making the window
 
         #makes a control panel within the window. We will use this to hold the buttons
         controlPanel = LabelFrame(self, text = 'Control Panel') 
-        controlPanel.config(bg='lightgreen', height = '200', width = '400') 
+        controlPanel.config(bg='lightgreen', height = '250', width = '400') 
         controlPanel.pack(side = LEFT)
         self.create_controls_widgets(controlPanel)
         
         #makes an instructions panel within the window.
-        instrPanel = LabelFrame(self, text = 'Instructions go here') 
-        instrPanel.config(bg='pink', height = '200', width = '400') 
+        instrPanel = LabelFrame(self, text = 'Instructions') 
+        instrPanel.config(bg='pink', height = '250', width = '400') 
         instrPanel.pack(side = LEFT)
         self.create_instructions(instrPanel)
         
         #makes output panel
         outputPanel = LabelFrame(master, text = 'Output:') 
-        outputPanel.config(bg='white', height = '400', width = '800') 
+        outputPanel.config(bg='white', height = '250', width = '800') 
         outputPanel.pack()
         #scrollbar
         scrollbar = Scrollbar(outputPanel)
@@ -40,7 +40,7 @@ class App(tk.Frame): #class for making the window
         #mylist = Text(outputPanel, yscrollcommand = scrollbar.set )
         for line in range(100): #replace with music note output
            mylist.insert(END, "This is line number " + str(line))
-        mylist.config(height = '400', width = '800')
+        mylist.config(height = '350', width = '800')
         mylist.pack( side = LEFT, fill = BOTH )
         scrollbar.config( command = mylist.yview )
         
@@ -73,9 +73,9 @@ class App(tk.Frame): #class for making the window
         button3.place(x=220, y=20, anchor="w")
         
     def create_instructions(self, panel): #the text that goes inside the instructions panel  
-        instrText = Message(panel, text="inside text") #replace with instructions text
-        instrText.config(bg='pink')
-        instrText.place(x=20, y=20, anchor="w")
+        instrText = Message(panel, text="Welcome to AutoAudio!\n\nThis program uses the LilyPond music engraving program to help YOU write your own sheet music!\nNo need to understand complex music theory!\nJust hit “Start Recording” and start singing, playing your favorite instrument, or just making sounds.\nWhen you’re done expressing yourself, press “Stop Recording” and your song will be written for you.\nJust run the resultant “NoteSheet.ly” file with LilyPond and open the PDF file written by the program to see it.\nNow anyone can be a music composer! Hit “Start” and have fun!\n\nInstall LilyPond: lilypond.org", font=("Helvetica", 8)) #replace with instructions text
+        instrText.config(bg='pink', width = '350')
+        instrText.place(x=20, y=0, anchor='nw')
        
     def record(self):
         global p
