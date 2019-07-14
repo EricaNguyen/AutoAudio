@@ -299,23 +299,24 @@ for noteObj in new_my_notes:
     # Classifying Note Durations
     classified = KeyChart.findNoteDuration(noteObj.duration, noteDurKeys)
     noteObj.durationNote = classified
-    noteObj.pitch = noteObj.pitch + getNoteType(classified) + " "
+    pitch = noteObj.pitch
+    pitch = pitch + getNoteType(classified) + " "
 
     #if getNoteType(classified) == wholeNote and noteObj.duration > w + hf:
         
     #Spliting into upper and lower staff
     #If note is Octave 3 or lower
-    numOfApos = whichStaff(noteObj.pitch)[1]
-    numOfComm = whichStaff(noteObj.pitch)[0]
+    numOfApos = whichStaff(pitch)[1]
+    numOfComm = whichStaff(pitch)[0]
 
     if numOfComm == 1 or numOfApos + numOfComm == 0:
         #Append note to lower staff
-        newStaffl += noteObj.pitch
+        newStaffl += pitch
         #Otherwise append a rest to upper staff with corresponding duration
         newStaffu += rest + getNoteType(classified) + " "
     else:
         #Append note to upper staff
-        newStaffu += noteObj.pitch
+        newStaffu += pitch
         #Or rest
         newStaffl += rest + getNoteType(classified) + " "
     
