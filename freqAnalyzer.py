@@ -3,6 +3,7 @@ import pyaudio
 import aubio
 import audioop
 import math
+import time
 import numpy as np 
 import warnings
 warnings.simplefilter("ignore", DeprecationWarning)
@@ -319,15 +320,19 @@ def getNoteLength(myInt):
         noteLength = 4
     return noteLength
 
+
 for noteObj in new_my_notes: 
     # Classifying Note Durations
     classified = KeyChart.findNoteDuration(noteObj.duration, noteDurKeys)
     pitch = noteObj.pitch
+    # Current notes length
+    getType = int(getNoteType(classified))
 
     # Measure Validity Check
     # setting the duration length of the note
-    noteObj.durationLength = getNoteLength(int(getNoteType(classified)))
-    lengthCounter += noteObj.durationLength
+    noteObj.durationLength = getNoteLength(getType)
+    dLength = noteObj.durationLength
+    lengthCounter += dLength
     
     fullMeasure = lengthCounter == measureLength
     exceedingMeasure = lengthCounter > measureLength
@@ -341,30 +346,64 @@ for noteObj in new_my_notes:
 
     #If note is Octave 3 or lower
     if numOfComm == 1 or numOfApos + numOfComm == 0:
+        # If valid measure
         if fullMeasure:
             pitch = pitch + getNoteType(classified) + " "
             #Append note to lower staff
             newStaffl += pitch
             #Otherwise append a rest to upper staff with corresponding duration
             newStaffu += rest + getNoteType(classified) + " "
-            #Append the bar to both staffs
+            #Append the bar to both staffs to cut valid measure
             newStaffl += bar
             newStaffu += bar
+            #Reset counter
             lengthCounter = 0
+        # If invalid measure and overflow
         elif exceedingMeasure:
-            # Split the note apart, in half I guess
-            # And append both, tied together
-            classified = classified / 2
-            pitchTied = pitch + getNoteType(classified) + "~ "
-            newStaffl += pitchTied
-            newStaffl += bar
-            newStaffl += pitch
+            # Delete the current notes length from the counter
+            # Find suitabe split so that the measure is valid
+            notesToFillMeasure = 0
+            notesToAppendAfterMeasure = 0
 
+            validLengthCounter = lengthCounter - dLength
+            # OVerflow amount
+            overflow = lengthCounter - measureLength
+            lengthCounter = overflow
+            # Finding the suitable length to validate the measure  
+            while True:
+                done = False
+                for i in range(16):
+                    # Debugging: print('overflow',overflow, 'Original NL', dLength, 'ValidLC',validLengthCounter,'| noteType', getNoteType(classified), '| noteLength', ((i+1) * getNoteLength(int(getNoteType(classified)))), '| Total Length', validLengthCounter + ((i+1) * getNoteLength(int(getNoteType(classified)))))
+                    if validLengthCounter + ((i+1) * getNoteLength(int(getNoteType(classified)))) == measureLength:
+                        notesToFillMeasure = i+1
+                        done = True
+                        break
+                if done:
+                    break
+                classified = classified / 2
+            
+            suitableNoteLength = getNoteLength(int(getNoteType(classified)))
+            print(suitableNoteLength, validLengthCounter)
+
+            while overflow != 0:
+                overflow = overflow - suitableNoteLength
+                notesToAppendAfterMeasure += 1
+            
+            pitchTied = pitch + getNoteType(classified) + "~ "
             newStaffu += rest + getNoteType(classified) + " "
+            newStaffl += pitchTied
+            for i in range(notesToFillMeasure-1):
+                newStaffl += pitch + '~ '
+                newStaffu += rest + getNoteType(classified) + " "
+            
+            newStaffl += bar
             newStaffu += bar
-            newStaffu += rest + getNoteType(classified) + " "
-            lengthCounter = lengthCounter - measureLength
-        else:
+
+            for i in range(notesToAppendAfterMeasure):
+                newStaffl += pitch + '~ '
+                newStaffu += rest + getNoteType(classified) + " "
+
+        else: # An invalid measure that has yet to be filled up
             pitch = pitch + getNoteType(classified) + " "
             newStaffl += pitch
             newStaffu += rest + getNoteType(classified) + " "
@@ -374,27 +413,66 @@ for noteObj in new_my_notes:
         #Append note to upper staff
         if fullMeasure:
             pitch = pitch + getNoteType(classified) + " "
-            #Append note to lower staff
+            #Append note to upper staff
             newStaffu += pitch
-            #Otherwise append a rest to upper staff with corresponding duration
+            #Otherwise append a rest to lower staff with corresponding duration
             newStaffl += rest + getNoteType(classified) + " "
             #Append the bar to both staffs
             newStaffu += bar
             newStaffl += bar
             lengthCounter = 0
         elif exceedingMeasure:
-            # Split the note apart, in half I guess
-            # And append both, tied together
-            classified = classified / 2
-            pitchTied = pitch + getNoteType(classified) + "~ "
-            newStaffu += pitchTied
-            newStaffu += bar
-            newStaffu += pitch + " "
+            # Delete the current notes length from the counter
+            # Find suitabe split so that the measure is valid
+            notesToFillMeasure = 0
+            notesToAppendAfterMeasure = 0
 
+            validLengthCounter = lengthCounter - dLength
+            # OVerflow amount
+            overflow = lengthCounter - measureLength
+            lengthCounter = overflow
+            # Finding the suitable length to validate the measure  
+            while True:
+                done = False
+                for i in range(16):
+                    print('overflow',overflow, 'Original NL', dLength, 'ValidLC',validLengthCounter,'| noteType', getNoteType(classified), '| noteLength', ((i+1) * getNoteLength(int(getNoteType(classified)))), '| Total Length', validLengthCounter + ((i+1) * getNoteLength(int(getNoteType(classified)))))
+                    if validLengthCounter + ((i+1) * getNoteLength(int(getNoteType(classified)))) == measureLength:
+                        notesToFillMeasure = i+1
+                        done = True
+                        break
+                if done:
+                    break
+                classified = classified / 2
+            
+            suitableNoteLength = getNoteLength(int(getNoteType(classified)))
+            print(suitableNoteLength, validLengthCounter)
+
+            while overflow != 0:
+                overflow = overflow - suitableNoteLength
+                notesToAppendAfterMeasure += 1
+            
+            pitchTied = pitch + getNoteType(classified) + "~ "
             newStaffl += rest + getNoteType(classified) + " "
+            newStaffu += pitchTied
+            for i in range(notesToFillMeasure-1):
+                newStaffu += pitch + '~ '
+                newStaffl += rest + getNoteType(classified) + " "
+            
+            newStaffu += bar
             newStaffl += bar
-            newStaffl += rest + getNoteType(classified) + " "
-            lengthCounter = lengthCounter - measureLength
+
+            for i in range(notesToAppendAfterMeasure):
+                newStaffu += pitch + '~ '
+                newStaffl += rest + getNoteType(classified) + " "
+            # numberOfNotes = dLength / getNoteLength(int(getNoteType(classified)))
+            # print(str(numberOfNotes) + 'potato')
+            # newStaffu += pitchTied
+            # newStaffu += bar
+            # newStaffl += rest + getNoteType(classified) + " "
+            # newStaffl += bar
+            # for i in range( int(numberOfNotes-2) ): #Since a note is already printed
+            #     newStaffu += pitch
+            #     newStaffl += rest + getNoteType(classified) + " "
         else:
             pitch = pitch + getNoteType(classified) + " "
             newStaffu += pitch
