@@ -399,9 +399,11 @@ for noteObj in new_my_notes:
             newStaffl += bar
             newStaffu += bar
 
-            for i in range(notesToAppendAfterMeasure):
+            for i in range(notesToAppendAfterMeasure-1):
                 newStaffl += pitch + '~ '
                 newStaffu += rest + getNoteType(classified) + " "
+            newStaffl += pitch + ' '
+            newStaffu += rest + getNoteType(classified) + " "
 
         else: # An invalid measure that has yet to be filled up
             pitch = pitch + getNoteType(classified) + " "
@@ -461,9 +463,11 @@ for noteObj in new_my_notes:
             newStaffu += bar
             newStaffl += bar
 
-            for i in range(notesToAppendAfterMeasure):
+            for i in range(notesToAppendAfterMeasure-1):
                 newStaffu += pitch + '~ '
                 newStaffl += rest + getNoteType(classified) + " "
+            newStaffu += pitch + ' '
+            newStaffl += rest + getNoteType(classified) + " "
             # numberOfNotes = dLength / getNoteLength(int(getNoteType(classified)))
             # print(str(numberOfNotes) + 'potato')
             # newStaffu += pitchTied
