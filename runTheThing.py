@@ -8,29 +8,32 @@ import subprocess
 #p = subprocess.Popen(['head', 'README.txt'])
 #command definitions
 bool = 0;
+output = "Welcome to AutoAudio!"
 #record button functions, aka button
 def record():
-    global p
-    global bool
-    if bool == 0:
-        #T.delete('1.0', END)
-        #T.insert(END,"Recording")
-        label.config(text="Recording")
-        temp = subprocess.call('cleaner.sh',shell = True)
-        #time counter
-        i = 0
-        #test code
-        #print(temp)
-        #while temp isn't done, wait until it's done
-        while temp != 0:
-            i = i+1
-            if i>5000:
-                temp.terminate()
-                break
-        p = subprocess.Popen(['python', 'freqAnalyzer.py'])
-        #test code, use instead of subprocess if thing don't work
-        #p = subprocess.Popen(['python', 'runTheThing.py'])
-    bool = 1
+	global p
+	global bool
+	global output
+	if bool == 0:
+		#T.delete('1.0', END)
+		#T.insert(END,"Recording")
+		label.config(text="Recording")
+		temp = subprocess.call('cleaner.sh',shell = True)
+		#time counter
+		i = 0
+		#test code
+		#print(temp)
+		#while temp isn't done, wait until it's done
+		while temp != 0:
+			i = i+1
+			if i>5000:
+				temp.terminate()
+				break
+		p = subprocess.Popen(['python', 'freqAnalyzer.py'],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+		output = p.communicate()
+		#test code, use instead of subprocess if thing don't work
+		#p = subprocess.Popen(['python', 'runTheThing.py'])
+	bool = 1
 	
 #stop record button functions, aka button 2
 def stopR():
@@ -56,8 +59,10 @@ def stopR():
 
 #quitting the program, aka button 3
 def quit():
+	global p
 	if bool == 1:
-		p.terminate()
+		if p != 0:
+			p.terminate()
 	exit()
 
 def getFName():
@@ -108,6 +113,7 @@ songName = "My Song 1"
 label = Label(controlFrame, text="Not Recording", font=("Helvetica", 12), fg="black")
 label.grid(row=6, column=0)
 
+
 #makes an instructions panel within the window.
 instrPanel = LabelFrame(master, text = 'Instructions go here') 
 instrPanel.config(bg='pink', height = '200', width = '400') 
@@ -128,10 +134,9 @@ scrollbar.pack( side = RIGHT, fill = Y )
 #output listed here
 mylist = Listbox(outputPanel, yscrollcommand = scrollbar.set )
 #mylist = Text(outputPanel, yscrollcommand = scrollbar.set )
-for line in range(100): #replace with music note output
-	mylist.insert(END, "This is line number " + str(line))
+mylist.insert(END, output)
 mylist.config(height = '200', width = '200')
-mylist.pack( side = LEFT, fill = BOTH )
+mylist.pack(side = LEFT, fill = BOTH )
 scrollbar.config( command = mylist.yview )
 
 mainloop()

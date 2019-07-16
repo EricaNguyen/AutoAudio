@@ -45,24 +45,27 @@ class App(tk.Frame): #class for making the window
         scrollbar.config( command = mylist.yview )
         
     def create_controls_widgets(self, panel): #where info displayed in control panel is defined
+        #global e1
+        #global e2
+        #global e3
         #display status for recording/not recording
         label = Label(panel, text="Not Recording", font=("Helvetica", 12), fg="black")
         label.place(x=260, y=20, anchor="w")
         
         #Label of fileName entry field
-        Label(panel, text="Put Output Filename Here:").place(x=20, y=60, anchor="w")
-        e1 = Entry(panel)
-        e1.place(x=170, y=60, anchor="w")
-        Label(panel, text="Put the Song Name Here:").place(x=20, y=90, anchor="w")
-        e2 = Entry(panel)
-        e2.place(x=165, y=90, anchor="w")
-        Label(panel, text="Put the Song Writer's Name Here:").place(x=20, y=120, anchor="w")
-        e3 = Entry(panel)
-        e3.place(x=205, y=120, anchor="w")
+        #Label(panel, text="Put Output Filename Here:").place(x=20, y=60, anchor="w")
+        #e1 = Entry(panel)
+        #e1.place(x=170, y=60, anchor="w")
+        #Label(panel, text="Put the Song Name Here:").place(x=20, y=90, anchor="w")
+        #e2 = Entry(panel)
+        #e2.place(x=165, y=90, anchor="w")
+        #Label(panel, text="Put the Song Writer's Name Here:").place(x=20, y=120, anchor="w")
+        #e3 = Entry(panel)
+        #e3.place(x=205, y=120, anchor="w")
         #default name
-        fileName = "NoteSheet"
-        authorName = "Author"
-        songName = "My Song 1"
+        #fileName = "NoteSheet"
+        #authorName = "Author"
+        #songName = "My Song 1"
         
         #buttons for control panel
         button = Button(panel, text="Start Recording", command = self.record)
@@ -83,7 +86,7 @@ class App(tk.Frame): #class for making the window
         if bool == 0:
             #T.delete('1.0', END)
             #T.insert(END,"Recording")
-            label = Label(self, text="Not Recording", font=("Helvetica", 12), fg="black")
+            label = Label(self, text="Recording", font=("Helvetica", 12), fg="black")
             label.place(x=260, y=20, anchor="w")
             label.config(text="Recording")
             temp = subprocess.call('cleaner.sh',shell = True)
@@ -99,9 +102,8 @@ class App(tk.Frame): #class for making the window
                     break
             p = subprocess.Popen(['python', 'freqAnalyzer.py'])
             #test code, use instead of subprocess if thing don't work
-            #p = subprocess.Popen(['python', 'runTheThing.py'])
+            #p = subprocess.Popen(['python', 'WindowManager.py'])
         bool = 1
-        print(bool)
         #print(fileName)
         
         
@@ -118,20 +120,22 @@ class App(tk.Frame): #class for making the window
             label = Label(self, text="Not Recording", font=("Helvetica", 12), fg="black")
             label.place(x=260, y=20, anchor="w")
             label.config(text="Not Recording")
-            if e1.get() != "":
-                fileName = e1.get()
-            if e2.get() != "":
-                songName = e2.get()
-            if e3.get() != "":
-                authorName = e3.get()
+            #open("output.pdf")
+            # if e1.get() != "":
+                # fileName = e1.get()
+            # if e2.get() != "":
+                # songName = e2.get()
+            # if e3.get() != "":
+                # authorName = e3.get()
             #check if there was any recording done
             #pass filename into lilypond or freqAnalyzer
         bool = 0
-
+		
     #quitting the program, aka button 3
     def quit(self):
         if bool == 1:
-            p.terminate()
+            if p != 0:
+                p.terminate()
         exit()
         
     def getFName():
@@ -145,7 +149,6 @@ class App(tk.Frame): #class for making the window
     def getSName():
         global songName
         return songName
-      
 # create the application for the user to see
 myapp = App()
 
