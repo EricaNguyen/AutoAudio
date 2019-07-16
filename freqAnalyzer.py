@@ -137,7 +137,6 @@ while True:
         # if confidence < 0.5:
         #     freq = 0
         
-        #MAX THE VARIABLE rms HAS THE AMPLITUDE
         #IT IS ALSO CONVERTED INTO DECIBEL 
         #I commented it out originally because the outputs didn't make sense
         #Maybe you can make some sense out of it
@@ -146,6 +145,7 @@ while True:
         #decibel = 20 * np.log10(rms) #dB = 20 * log10(Amp)
         #print(decibel)
 
+        #MAX THE linear VARIABLE HAS THE SOUND PRESSURE LEVELS
         #aubio:
         linear = '{:.4f}'.format(aubio.level_lin(samples)) #seems to make more sense
         decibels = '{:.4f}'.format(aubio.db_spl(samples))
@@ -468,15 +468,7 @@ for noteObj in new_my_notes:
                 newStaffl += rest + getNoteType(classified) + " "
             newStaffu += pitch + ' '
             newStaffl += rest + getNoteType(classified) + " "
-            # numberOfNotes = dLength / getNoteLength(int(getNoteType(classified)))
-            # print(str(numberOfNotes) + 'potato')
-            # newStaffu += pitchTied
-            # newStaffu += bar
-            # newStaffl += rest + getNoteType(classified) + " "
-            # newStaffl += bar
-            # for i in range( int(numberOfNotes-2) ): #Since a note is already printed
-            #     newStaffu += pitch
-            #     newStaffl += rest + getNoteType(classified) + " "
+            
         else:
             pitch = pitch + getNoteType(classified) + " "
             newStaffu += pitch
