@@ -4,7 +4,7 @@ echo running program...
 ./cleaner.sh
 
 echo running freqAnalyzer..
-python3 freqAnalyzer.py
+python freqAnalyzer.py
 
 echo creating pdf, wait a minute...
 lilypond output.ly
