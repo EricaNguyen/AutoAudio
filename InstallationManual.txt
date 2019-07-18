@@ -1,0 +1,31 @@
+AutoAudio Installation Manual
+
+1. To use this program, you must first download the source code.
+from the Git repository. You can do this through your browser at the URL: 
+<https://github.com/EricaNguyen/AutoAudio>.
+
+2. You will also need Python, version 3: <https://www.python.org/downloads/>.
+Download any version of Python 3 and run the installer.
+-- When installing: on the first page, ensure that you check the box at the bottom
+   that reads: “Add Python 3.#.# to PATH”
+-- You will also need to ensure that the pip tool is installed. This should be done
+   by default when you click “Install Now”, but you can check this manually by
+   clicking “Customize Installation” and making sure the box named “pip” is checked.
+
+3. You may also need to install additional build tools to run the program.
+-- For Windows, go to the link <https://visualstudio.microsoft.com/downloads/> and scroll down.
+   You do NOT need to install the full Visual Studio package. Expand the tab labelled
+   “Tools for Visual Studio 2019” and download the “Build Tools for Visual Studio 2019”.
+   Once downloaded, run the executable to install the tools.
+
+4. Install Python libraries needed to run the program: numpy, aubio, and pyaudio.
+-- In Windows, open a Command Prompt and install the given libraries using pip.
+   This can be done by simply entering the command:
+   <python -m pip install --user aubio numpy pyaudio>.
+
+5. Install LilyPond from <http://lilypond.org/>.
+-- The LilyPond website gives documentation on installation, as well as
+   how to add the program to PATH, as this must be done manually
+
+6. For non-Linux/Unix systems, you will need a Bash emulator.
+   This can be used through git, which can be downloaded from: <https://git-scm.com/downloads>
