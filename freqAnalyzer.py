@@ -9,7 +9,9 @@ import warnings
 warnings.simplefilter("ignore", DeprecationWarning)
 
 #linking together
+from noteClass import Note
 import KeyChart
+import filterList
 
 #-----------------------------------------------------------
 # LILYPOND SYNTAX (Taken from documentation)
@@ -68,22 +70,6 @@ RECORD_SECONDS = 5
 TOLERANCE = 0.8
 WAVE_OUTPUT_NAME = "def_output.wav"
 
-class Note(object):
-    def __init__(self, pitch, duration, durationLength, soundPressureLevel):
-        self.pitch = pitch
-        self.duration = duration
-        self.soundPressureLevel = soundPressureLevel
-        self.durationLength = durationLength
-
-    def printNote(self):
-        print("Pitch: ", self.pitch, "| Duration :", self.duration, "| Duration Note:", self.durationLength, "| Sound Pressure Level:", self.soundPressureLevel)
-
-# I don't really understand FFT 
-'''
-SAMPLES_PER_FFT = FRAME_SIZE * FRAMES_PER_FFT
-FREQ_STEP = float(RATE) / SAMPLES_PER_FFT 
-'''
-
 # Open the stream
 p = pyaudio.PyAudio()
 
@@ -109,15 +95,6 @@ fDetection.set_silence(-40)
 fDetection.set_tolerance(TOLERANCE)
 
 print("* RECORDING")
-
-#NUM_CHUNKS = int((RATE / CHUNK) * RECORD_SECONDS)
-
-'''
-# RATE * TIME_RECORDED / CHUNKS = NUM CHUNKS
-for i in range(0, NUM_CHUNKS): 
-    data = stream.read(CHUNK)
-    frames.append(data)
-'''
 
 staff = ""
 prev_note = ""
@@ -151,7 +128,7 @@ while True:
         decibels = '{:.4f}'.format(aubio.db_spl(samples))
         #Ive been testing it and it seems like 
         #it's outputting negative decibels
-        #the closer to 0, the louder, which doesn't make sense
+        #the closer to 0, the louder
         
         #uncomment to print original stuff
         #print("{} / {}".format(freq, confidence))
@@ -217,26 +194,25 @@ for noteObj in my_notes:
 
 #New algorithm:
 #first loop through and join split up notes
-for i in range(len(my_notes)):
-    #avoid segfault
-    if i > 0 and i < len(my_notes)-1 and my_notes[i].duration == 1:
-       #check if other sies of duration 1 note are same pitch
-       if my_notes[i-1].pitch == my_notes[i+1].pitch:
-          #add durations together and delete one
-          my_notes[i-1].duration += my_notes[i+1].duration
-          del my_notes[i+1]
+fixed_my_notes = filterList.fixDuration(my_notes)
+
+# for i in range(len(my_notes)):
+#     #avoid segfault
+#     if i > 0 and i < len(my_notes)-1 and my_notes[i].duration == 1:
+#        #check if other sies of duration 1 note are same pitch
+#        if my_notes[i-1].pitch == my_notes[i+1].pitch:
+#           #add durations together and delete one
+#           my_notes[i-1].duration += my_notes[i+1].duration
+#           del my_notes[i+1]
 
 
 #prints correctly
 print("after joining ||| before outlier removal")
-for noteObj in my_notes:
+for noteObj in fixed_my_notes:
    noteObj.printNote()
 
-#NOW remove all recorded notes with duration of 1
-new_my_notes = []
-
 #LilyPond durations
-sumOfDuration = 0
+#sumOfDuration = 0
 lengthCounter = 0
 #Assuming measures are 4/4
 measureLength = 4
@@ -250,12 +226,10 @@ sixteenthNote = '16'
 rest = 'r'
 bar = '| '
 
+#NOW remove all recorded notes with duration of 1
 #insert all with duration > 1 into new_my_notes
-for noteObj in my_notes:
-   #also remove rests TODO remove that
-   if noteObj.duration > 1 and noteObj.pitch != "REST":
-      sumOfDuration += noteObj.duration
-      new_my_notes.append(noteObj)
+#the total duration is also calculated
+(new_my_notes, sumOfDuration) = filterList.outlierRemoval(fixed_my_notes)
 
 #Determining Note Type using holistic perspective
 
