@@ -113,7 +113,8 @@ class App(tk.Frame): #class for making the window
         global authorName
         global bool
         if bool == 1:
-            p.terminate()
+            pid = p.pid
+            os.kill(pid, signal.CTRL_C_EVENT)
             #T.delete('1.0', END)
             #T.insert(END,"Not Recording")
             label = Label(self, text="Not Recording", font=("Helvetica", 12), fg="red")
