@@ -10,6 +10,7 @@ from noteClass import Note
 import KeyChart
 import filterList
 
+# POTATO
 #-----------------------------------------------------------
 # LILYPOND SYNTAX (Taken from documentation)
 # For future use. Once we want to implement other properties
