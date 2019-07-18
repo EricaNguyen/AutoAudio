@@ -133,8 +133,7 @@ class App(tk.Frame): #class for making the window
     #quitting the program, aka button 3
     def quit(self):
         if bool == 1:
-            if p != 0:
-                p.terminate()
+            App.stopR(self)
         exit()
         
     def getFName():
