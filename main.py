@@ -11,9 +11,11 @@ warnings.simplefilter("ignore", DeprecationWarning)
 #linking together
 from noteClass import Note
 from freqAnalyzer import getFreq
+from validateMeasures import noteD, whichStaff, getNoteLength
 import KeyChart
 import filterList
 
+#Setting up Stream
 FRAME_SIZE = 1024 * 2
 FRAMES_PER_FFT = 16 # FFT = Fast Fourier Transform
 #FORMAT = pyaudio.paInt16
@@ -28,7 +30,6 @@ WAVE_OUTPUT_NAME = "def_output.wav"
 
 # Open the stream
 p = pyaudio.PyAudio()
-
 stream = p.open(
     format = FORMAT,
     channels = CHANNELS,
@@ -36,7 +37,6 @@ stream = p.open(
     input = True,
     frames_per_buffer = CHUNK
 )
-
 
 if len(sys.argv) > 1: # If file-name specified on cmdline
     WAVE_OUTPUT_NAME = sys.argv[1] # output file with this name
@@ -74,17 +74,6 @@ for noteObj in my_notes:
 #first loop through and join split up notes
 fixed_my_notes = filterList.fixDuration(my_notes)
 
-
-# for i in range(len(my_notes)):
-#     #avoid segfault
-#     if i > 0 and i < len(my_notes)-1 and my_notes[i].duration == 1:
-#        #check if other sies of duration 1 note are same pitch
-#        if my_notes[i-1].pitch == my_notes[i+1].pitch:
-#           #add durations together and delete one
-#           my_notes[i-1].duration += my_notes[i+1].duration
-#           del my_notes[i+1]
-
-
 #prints correctly
 print("after joining ||| before outlier removal")
 for noteObj in fixed_my_notes:
@@ -116,15 +105,7 @@ tie = '~ '
 space = ' '
 
 #Quarter Note
-q = sumOfDuration / len(new_my_notes)
-#Whole Note
-w = q * 4
-#Half Note
-hf = q * 2
-#Eighth Note
-e = q / 2
-#Sixteenth Note
-s = q / 4
+(q, w, hf, e, s) = noteD(sumOfDuration, new_my_notes)
 
 sixteenthNoteLength = .25
 eighthNoteLength = .5
@@ -135,18 +116,6 @@ wholeNoteLength = 4
 #Note Duration List
 noteDurKeys = (s, e, q, hf, w)
 #---------------------------------------------
-
-def whichStaff(myString):
-    commCount = 0
-    aposCount = 0
-    for c in myString:
-        if c == ',':
-            commCount += 1
-            break
-        if c == "'":
-            aposCount += 1
-            break
-    return (commCount, aposCount)
 
 def getNoteType(myInt):
     typeN = ''
@@ -162,20 +131,6 @@ def getNoteType(myInt):
     else:
         typeN += quarterNote
     return typeN
-
-def getNoteLength(myInt):
-    noteLength = 0
-    if myInt == int(sixteenthNote):
-        noteLength = .25
-    elif myInt == int(eighthNote):
-        noteLength = .5
-    elif myInt == int(quarterNote):
-        noteLength = 1
-    elif myInt == int(halfNote):
-        noteLength = 2
-    else:
-        noteLength = 4
-    return noteLength
 
 
 for noteObj in new_my_notes: 
