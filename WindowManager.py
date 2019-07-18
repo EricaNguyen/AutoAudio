@@ -99,7 +99,7 @@ class App(tk.Frame): #class for making the window
                 if i>5000:
                     temp.terminate()
                     break
-            p = subprocess.Popen(['python', 'freqAnalyzer.py'])
+            p = subprocess.Popen(['python', 'main.py'])
             #test code, use instead of subprocess if thing don't work
             #p = subprocess.Popen(['python', 'WindowManager.py'])
         bool = 1
