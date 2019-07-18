@@ -49,8 +49,8 @@ class App(tk.Frame): #class for making the window
         #global e2
         #global e3
         #display status for recording/not recording
-        label = Label(panel, text="Not Recording", font=("Helvetica", 12), fg="black")
-        label.place(x=260, y=20, anchor="w")
+        label = Label(panel, text="Not Recording", font=("Helvetica", 12), fg="red")
+        label.place(x=220, y=20, anchor="w")
         
         #Label of fileName entry field
         #Label(panel, text="Put Output Filename Here:").place(x=20, y=60, anchor="w")
@@ -72,8 +72,8 @@ class App(tk.Frame): #class for making the window
         button.place(x=20, y=20, anchor="w")
         button2 = Button(panel, text="Stop Recording", command = self.stopR)
         button2.place(x=120, y=20, anchor="w")
-        button3 = Button(panel, text="Quit", command = self.quit)
-        button3.place(x=220, y=20, anchor="w")
+        button3 = Button(panel, text="Quit AutoAudio", command = self.quit)
+        button3.place(x=20, y=190, anchor="w")
         
     def create_instructions(self, panel): #the text that goes inside the instructions panel  
         instrText = Message(panel, text="Welcome to AutoAudio!\n\nThis program uses the LilyPond music engraving program to help YOU write your own sheet music!\nNo need to understand complex music theory!\nJust hit “Start Recording” and start singing, playing your favorite instrument, or just making sounds.\nWhen you’re done expressing yourself, press “Stop Recording” and your song will be written for you.\nJust run the resultant “NoteSheet.ly” file with LilyPond and open the PDF file written by the program to see it.\nNow anyone can be a music composer! Hit “Start” and have fun!\n\nInstall LilyPond: lilypond.org", font=("Helvetica", 8)) #replace with instructions text
@@ -86,9 +86,8 @@ class App(tk.Frame): #class for making the window
         if bool == 0:
             #T.delete('1.0', END)
             #T.insert(END,"Recording")
-            label = Label(self, text="Recording", font=("Helvetica", 12), fg="black")
-            label.place(x=260, y=20, anchor="w")
-            label.config(text="Recording")
+            label = Label(self, text="    Recording   ", font=("Helvetica", 12), fg="green")
+            label.place(x=222, y=36, anchor="w")
             temp = subprocess.call('cleaner.sh',shell = True)
             #time counter
             i = 0
@@ -117,9 +116,8 @@ class App(tk.Frame): #class for making the window
             p.terminate()
             #T.delete('1.0', END)
             #T.insert(END,"Not Recording")
-            label = Label(self, text="Not Recording", font=("Helvetica", 12), fg="black")
-            label.place(x=260, y=20, anchor="w")
-            label.config(text="Not Recording")
+            label = Label(self, text="Not Recording", font=("Helvetica", 12), fg="red")
+            label.place(x=222, y=36, anchor="w")
             #open("output.pdf")
             # if e1.get() != "":
                 # fileName = e1.get()
