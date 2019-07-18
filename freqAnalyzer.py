@@ -10,7 +10,6 @@ from noteClass import Note
 import KeyChart
 import filterList
 
-# POTATO
 #-----------------------------------------------------------
 # LILYPOND SYNTAX (Taken from documentation)
 # For future use. Once we want to implement other properties
@@ -121,7 +120,7 @@ def getFreq(stream, CHUNK, fDetection, outputsink):
                     my_notes[len(my_notes)-1].duration += 1              
               
             #else it's a rest
-            else:
+            elif linear == 0.000 :
                 #if last note was not a rest
                 if prev_note != "REST":
                     prev_note = "REST"
@@ -130,7 +129,12 @@ def getFreq(stream, CHUNK, fDetection, outputsink):
                 #else last note was a rest
                 else: 
                     my_notes[len(my_notes)-1].duration += 1
-              
+            #else freq < 25 but still sound, just extend last note  
+            else:
+                if prev_note != "":
+                    my_notes[len(my_notes)-1].duration += 1
+
+
 
         except KeyboardInterrupt:
             print ("User Ctrl+C. Exiting...")
