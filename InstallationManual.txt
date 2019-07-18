@@ -1,6 +1,6 @@
 AutoAudio Installation Manual
 
-1. To use this program, you must first download the source code.
+1. To use this program, you must first download the source code
    from the Git repository. You can do this through your browser at the URL: 
    <https://github.com/EricaNguyen/AutoAudio>.
 
