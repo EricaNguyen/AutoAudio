@@ -24,7 +24,7 @@ def outlierRemoval(noteList):
     sumOfDuration = 0
     for noteObj in noteList:
         #also remove rests TODO remove that
-        if noteObj.duration > 1 and noteObj.pitch != "REST":
+        if noteObj.duration > 1:
             sumOfDuration += noteObj.duration
             new_my_notes.append(noteObj)
 
