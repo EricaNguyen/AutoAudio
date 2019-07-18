@@ -18,7 +18,7 @@ class App(tk.Frame): #class for making the window
 
         #makes a control panel within the window. We will use this to hold the buttons
         controlPanel = LabelFrame(self, text = 'Control Panel') 
-        controlPanel.config(bg='lightgreen', height = '250', width = '400') 
+        controlPanel.config(height = '250', width = '400') 
         controlPanel.pack(side = LEFT)
         self.create_controls_widgets(controlPanel)
         
@@ -51,8 +51,8 @@ class App(tk.Frame): #class for making the window
         global photo
         global photo2
         #display status for recording/not recording
-        label = Label(panel, text="Not Recording", font=("Helvetica", 12), fg="red")
-        label.place(x=220, y=20, anchor="w")
+        label = Label(panel, text="Not Recording", font=("Helvetica", 12), fg="red", bg="yellow")
+        label.place(x=220, y=45, anchor="w")
         
         #Label of fileName entry field
         #Label(panel, text="Put Output Filename Here:").place(x=20, y=60, anchor="w")
@@ -72,11 +72,11 @@ class App(tk.Frame): #class for making the window
         #buttons for control panel
         location = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(sys.argv[0])))
         photo = PhotoImage(file = os.path.join(location,'startbutton.png'))
-        button = Button(panel, text="Start Recording", command = self.record, image = photo)
-        button.place(x=20, y=20, anchor="w")
+        button = Button(panel, text="Start Recording", command = self.record, image = photo, compound=TOP, bd=0)
+        button.place(x=20, y=20, anchor="nw")
         photo2 = PhotoImage(file = os.path.join(location,'stopbutton.png'))
-        button2 = Button(panel, text="Stop Recording", command = self.stopR, image = photo2)
-        button2.place(x=120, y=20, anchor="w")
+        button2 = Button(panel, text="Stop Recording", command = self.stopR, image = photo2, compound=TOP, bd=0)
+        button2.place(x=120, y=20, anchor="nw")
         button3 = Button(panel, text="Quit AutoAudio", command = self.quit)
         button3.place(x=20, y=190, anchor="w")
         
@@ -91,8 +91,8 @@ class App(tk.Frame): #class for making the window
         if bool == 0:
             #T.delete('1.0', END)
             #T.insert(END,"Recording")
-            label = Label(self, text="    Recording   ", font=("Helvetica", 12), fg="green")
-            label.place(x=222, y=36, anchor="w")
+            label = Label(self, text="    Recording   ", font=("Helvetica", 12), fg="green", bg="yellow")
+            label.place(x=222, y=61, anchor="w")
             temp = subprocess.call('cleaner.sh',shell = True)
             #time counter
             i = 0
@@ -122,8 +122,8 @@ class App(tk.Frame): #class for making the window
             os.kill(pid, signal.CTRL_C_EVENT)
             #T.delete('1.0', END)
             #T.insert(END,"Not Recording")
-            label = Label(self, text="Not Recording", font=("Helvetica", 12), fg="red")
-            label.place(x=222, y=36, anchor="w")
+            label = Label(self, text="Not Recording", font=("Helvetica", 12), fg="red", bg="yellow")
+            label.place(x=222, y=61, anchor="w")
             #open("output.pdf")
             # if e1.get() != "":
                 # fileName = e1.get()
