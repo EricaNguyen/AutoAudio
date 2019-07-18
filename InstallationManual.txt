@@ -1,8 +1,8 @@
 AutoAudio Installation Manual
 
 1. To use this program, you must first download the source code.
-from the Git repository. You can do this through your browser at the URL: 
-<https://github.com/EricaNguyen/AutoAudio>.
+   from the Git repository. You can do this through your browser at the URL: 
+   <https://github.com/EricaNguyen/AutoAudio>.
 
 2. You will also need Python, version 3: <https://www.python.org/downloads/>.
 Download any version of Python 3 and run the installer.
