@@ -124,6 +124,7 @@ class App(tk.Frame): #class for making the window
             #T.insert(END,"Not Recording")
             label = Label(self, text="Not Recording", font=("Helvetica", 12), fg="red", bg="yellow")
             label.place(x=222, y=61, anchor="w")
+            temp = subprocess.call('lilyP.sh',shell = True)
             #open("output.pdf")
             # if e1.get() != "":
                 # fileName = e1.get()
