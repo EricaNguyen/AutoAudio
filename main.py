@@ -14,6 +14,7 @@ from freqAnalyzer import getFreq
 from validateMeasures import noteD, whichStaff, getNoteLength
 import KeyChart
 import filterList
+import removeEdges
 
 #Setting up Stream
 FRAME_SIZE = 1024 * 2
@@ -72,7 +73,12 @@ print("before joining")
 
 #New algorithm:
 #first loop through and join split up notes
-fixed_my_notes = filterList.fixDuration(my_notes)
+
+#remove edges
+edgeless_my_notes = removeEdges.removeEdges(my_notes)
+
+
+fixed_my_notes = filterList.fixDuration(edgeless_my_notes)
 
 #prints correctly
 print("after joining ||| before outlier removal")
@@ -136,6 +142,8 @@ def getNoteType(myInt):
     else:
         typeN += quarterNote
     return typeN
+
+
 
 
 for noteObj in new_my_notes: 

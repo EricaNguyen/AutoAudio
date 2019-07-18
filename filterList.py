@@ -27,7 +27,7 @@ def outlierRemoval(noteList, eighthnote):
         if noteObj.duration > 1 and noteObj.pitch != 'r':
             sumOfDuration += noteObj.duration
             new_my_notes.append(noteObj)
-        elif noteObj.pitch == 'r' and noteObj.duration >= eighthnote:
+        elif noteObj.pitch == 'r' and noteObj.duration > eighthnote:
             sumOfDuration += noteObj.duration
             new_my_notes.append(noteObj)
 
