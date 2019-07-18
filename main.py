@@ -67,8 +67,8 @@ newStaffl = ""
 
 #print all recorded notes (shortened)
 print("before joining")
-for noteObj in my_notes:
-   noteObj.printNote()
+# for noteObj in my_notes:
+#    noteObj.printNote()
 
 #New algorithm:
 #first loop through and join split up notes
@@ -76,8 +76,8 @@ fixed_my_notes = filterList.fixDuration(my_notes)
 
 #prints correctly
 print("after joining ||| before outlier removal")
-for noteObj in fixed_my_notes:
-   noteObj.printNote()
+# for noteObj in fixed_my_notes:
+#    noteObj.printNote()
 
 #NOW remove all recorded notes with duration of 1
 #insert all with duration > 1 into new_my_notes
@@ -290,8 +290,8 @@ for noteObj in new_my_notes:
 
 #prints correctly
 print("after outlier removal and classifying duration")
-for noteObj in new_my_notes:
-   noteObj.printNote()
+# for noteObj in new_my_notes:
+#    noteObj.printNote()
 
 #following is correct
 print("staff: ", staff)         #with duration 1 notes

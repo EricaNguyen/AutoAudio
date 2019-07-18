@@ -124,6 +124,7 @@ def getFreq(stream, CHUNK, fDetection, outputsink):
                 #if last note was not a rest
                 if prev_note != "REST":
                     prev_note = "REST"
+                    print("REST")
                     newRest = Note("REST", 1, 'TBD', linear)
                     my_notes.append(newRest)
                 #else last note was a rest
@@ -132,6 +133,7 @@ def getFreq(stream, CHUNK, fDetection, outputsink):
             #else freq < 25 but still sound, just extend last note  
             else:
                 if prev_note != "":
+                    print('REST')
                     my_notes[len(my_notes)-1].duration += 1
 
 
