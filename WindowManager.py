@@ -24,25 +24,9 @@ class App(tk.Frame): #class for making the window
         
         #makes an instructions panel within the window.
         instrPanel = LabelFrame(self, text = 'Instructions') 
-        instrPanel.config(bg='pink', height = '250', width = '400') 
+        instrPanel.config(height = '250', width = '400') 
         instrPanel.pack(side = LEFT)
         self.create_instructions(instrPanel)
-        
-        #makes output panel
-        outputPanel = LabelFrame(master, text = 'Output:') 
-        outputPanel.config(bg='white', height = '250', width = '800') 
-        outputPanel.pack()
-        #scrollbar
-        scrollbar = Scrollbar(outputPanel)
-        scrollbar.pack( side = RIGHT, fill = Y )
-        #output listed here
-        mylist = Listbox(outputPanel, yscrollcommand = scrollbar.set )
-        #mylist = Text(outputPanel, yscrollcommand = scrollbar.set )
-        for line in range(100): #replace with music note output
-           mylist.insert(END, "This is line number " + str(line))
-        mylist.config(height = '350', width = '800')
-        mylist.pack( side = LEFT, fill = BOTH )
-        scrollbar.config( command = mylist.yview )
         
     def create_controls_widgets(self, panel): #where info displayed in control panel is defined
         #global e1
@@ -82,7 +66,7 @@ class App(tk.Frame): #class for making the window
         
     def create_instructions(self, panel): #the text that goes inside the instructions panel  
         instrText = Message(panel, text="Welcome to AutoAudio!\n\nThis program uses the LilyPond music engraving program to help YOU write your own sheet music!\nNo need to understand complex music theory!\nJust hit “Start Recording” and start singing, playing your favorite instrument, or just making sounds.\nWhen you’re done expressing yourself, press “Stop Recording” and your song will be written for you.\nJust run the resultant “NoteSheet.ly” file with LilyPond and open the PDF file written by the program to see it.\nNow anyone can be a music composer! Hit “Start” and have fun!\n\nInstall LilyPond: lilypond.org", font=("Helvetica", 8)) #replace with instructions text
-        instrText.config(bg='pink', width = '350')
+        instrText.config(width = '350')
         instrText.place(x=20, y=0, anchor='nw')
        
     def record(self):
@@ -157,7 +141,7 @@ class App(tk.Frame): #class for making the window
 myapp = App()
 
 myapp.master.title("AutoAudio")
-myapp.master.geometry('800x600')
+myapp.master.geometry('800x250')
 
 # start the program
 myapp.mainloop()
