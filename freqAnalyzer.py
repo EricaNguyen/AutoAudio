@@ -132,7 +132,7 @@ def getFreq(stream, CHUNK, fDetection, outputsink):
                 else: 
                     #print('asdnasdjnasjdnj')
                     my_notes[len(my_notes)-1].duration += 1
-                    my_notes[len(my_notes)-1].printNote()
+                    #my_notes[len(my_notes)-1].printNote()
             #else freq < 25 but still sound, just extend last note  
             else:
                 if prev_note != "":

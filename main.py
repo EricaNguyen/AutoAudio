@@ -82,7 +82,12 @@ print("after joining ||| before outlier removal")
 #NOW remove all recorded notes with duration of 1
 #insert all with duration > 1 into new_my_notes
 #the total duration is also calculated
-(new_my_notes, sumOfDuration) = filterList.outlierRemoval(fixed_my_notes)
+tempDuration = 0
+for noteObj in fixed_my_notes:
+    tempDuration += noteObj.duration
+
+(tempq, tempw, temphf, tempe, temps) = noteD(tempDuration, fixed_my_notes)
+(new_my_notes, sumOfDuration) = filterList.outlierRemoval(fixed_my_notes, tempe)
 
 #Determining Note Type using holistic perspective
 
@@ -290,8 +295,8 @@ for noteObj in new_my_notes:
 
 #prints correctly
 print("after outlier removal and classifying duration")
-# for noteObj in new_my_notes:
-#    noteObj.printNote()
+for noteObj in new_my_notes:
+    noteObj.printNote()
 
 #following is correct
 print("staff: ", staff)         #with duration 1 notes
