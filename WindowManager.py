@@ -48,6 +48,8 @@ class App(tk.Frame): #class for making the window
         #global e1
         #global e2
         #global e3
+        global photo
+        global photo2
         #display status for recording/not recording
         label = Label(panel, text="Not Recording", font=("Helvetica", 12), fg="red")
         label.place(x=220, y=20, anchor="w")
@@ -68,9 +70,12 @@ class App(tk.Frame): #class for making the window
         #songName = "My Song 1"
         
         #buttons for control panel
-        button = Button(panel, text="Start Recording", command = self.record)
+        location = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(sys.argv[0])))
+        photo = PhotoImage(file = os.path.join(location,'startbutton.png'))
+        button = Button(panel, text="Start Recording", command = self.record, image = photo)
         button.place(x=20, y=20, anchor="w")
-        button2 = Button(panel, text="Stop Recording", command = self.stopR)
+        photo2 = PhotoImage(file = os.path.join(location,'stopbutton.png'))
+        button2 = Button(panel, text="Stop Recording", command = self.stopR, image = photo2)
         button2.place(x=120, y=20, anchor="w")
         button3 = Button(panel, text="Quit AutoAudio", command = self.quit)
         button3.place(x=20, y=190, anchor="w")
