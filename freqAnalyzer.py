@@ -80,6 +80,7 @@ def getFreq(stream, CHUNK, fDetection, outputsink):
             #MAX THE linear VARIABLE HAS THE SOUND PRESSURE LEVELS
             #aubio:
             linear = '{:.4f}'.format(aubio.level_lin(samples)) #seems to make more sense
+            linear = float(linear)
             decibels = '{:.4f}'.format(aubio.db_spl(samples))
             #Ive been testing it and it seems like 
             #it's outputting negative decibels
@@ -120,7 +121,7 @@ def getFreq(stream, CHUNK, fDetection, outputsink):
                     my_notes[len(my_notes)-1].duration += 1              
               
             #else it's a rest
-            elif linear == 0.000 :
+            elif linear < 0.001:
                 #if last note was not a rest
                 if prev_note != "REST":
                     prev_note = "REST"
@@ -129,6 +130,7 @@ def getFreq(stream, CHUNK, fDetection, outputsink):
                     my_notes.append(newRest)
                 #else last note was a rest
                 else: 
+                    #print('asdnasdjnasjdnj')
                     my_notes[len(my_notes)-1].duration += 1
             #else freq < 25 but still sound, just extend last note  
             else:
