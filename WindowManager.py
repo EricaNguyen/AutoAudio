@@ -65,7 +65,7 @@ class App(tk.Frame): #class for making the window
         button3.place(x=20, y=190, anchor="w")
         
     def create_instructions(self, panel): #the text that goes inside the instructions panel  
-        instrText = Message(panel, text="Welcome to AutoAudio!\n\nThis program uses the LilyPond music engraving program to help YOU write your own sheet music!\nNo need to understand complex music theory!\nJust hit “Start Recording” and start singing, playing your favorite instrument, or just making sounds.\nWhen you’re done expressing yourself, press “Stop Recording” and your song will be written for you.\nJust run the resultant “NoteSheet.ly” file with LilyPond and open the PDF file written by the program to see it.\nNow anyone can be a music composer! Hit “Start” and have fun!\n\nInstall LilyPond: lilypond.org", font=("Helvetica", 8)) #replace with instructions text
+        instrText = Message(panel, text="Welcome to AutoAudio!\n\nThis program uses the LilyPond music engraving program to help YOU write your own sheet music!\nNo need to understand complex music theory!\nJust hit “Start Recording” and start singing, playing your favorite instrument, or just making sounds.\nWhen you’re done expressing yourself, press “Stop Recording” and your song will be written for you.\nJust run the resultant “output.ly” file with LilyPond and open the PDF file written by the program to see it.\nNow anyone can be a music composer! Hit “Start” and have fun!\n\nInstall LilyPond: lilypond.org", font=("Helvetica", 8)) #replace with instructions text
         instrText.config(width = '350')
         instrText.place(x=20, y=0, anchor='nw')
        
@@ -109,10 +109,7 @@ class App(tk.Frame): #class for making the window
             #T.insert(END,"Not Recording")
             label = Label(self, text="Not Recording", font=("Helvetica", 12), fg="red", bg="yellow")
             label.place(x=222, y=61, anchor="w")
-            try:
-                subprocess.call('lilyP.sh',shell = True)
-            except:
-                pass
+            subprocess.call('lilyP.sh',shell = True)
             #open("output.pdf")
             # if e1.get() != "":
                 # fileName = e1.get()
