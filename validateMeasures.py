@@ -1,4 +1,5 @@
 #validateMeasures.py
+import sys
 
 wholeNote = '1'
 halfNote = '2'
@@ -14,7 +15,11 @@ wholeNoteLength = 4
 
 
 def noteD(sumOfDuration, noteList):
-    q = sumOfDuration / len(noteList)
+    try:
+        q = sumOfDuration / len(noteList)
+    except ZeroDivisionError:
+        print("Nothing recorded. Program terminated prematurely")
+        sys.exit()  
     #Whole Note
     w = q * 4
     #Half Note
