@@ -28,6 +28,7 @@ def noteD(sumOfDuration, noteList):
 def whichStaff(myString):
     commCount = 0
     aposCount = 0
+    isRest = False
     for c in myString:
         if c == ',':
             commCount += 1
@@ -35,7 +36,9 @@ def whichStaff(myString):
         if c == "'":
             aposCount += 1
             break
-    return (commCount, aposCount)
+        if c == 'r':
+            isRest = True
+    return (commCount, aposCount, isRest)
 
 def getNoteLength(myInt):
     noteLength = 0

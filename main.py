@@ -166,9 +166,10 @@ for noteObj in new_my_notes:
     #Spliting into upper and lower staff
     numOfApos = whichStaff(pitch)[1]
     numOfComm = whichStaff(pitch)[0]
+    isRest = whichStaff(pitch)[2]
 
     #If note is Octave 3 or lower
-    if numOfComm == 1 or numOfApos + numOfComm == 0:
+    if (numOfComm == 1 and not isRest) or numOfApos + numOfComm == 0:
         # If valid measure
         if fullMeasure:
             pitch = pitch + getNoteType(classified) + space
@@ -234,7 +235,7 @@ for noteObj in new_my_notes:
             newStaffu += rest + getNoteType(classified) + space
 
     #If note is Octave 4 or higher
-    else:
+    elif numOfApos == 1:
         #Append note to upper staff
         if fullMeasure:
             pitch = pitch + getNoteType(classified) + space
@@ -270,7 +271,7 @@ for noteObj in new_my_notes:
                 classified = classified / 2
             
             suitableNoteLength = getNoteLength(int(getNoteType(classified)))
-            print(suitableNoteLength, validLengthCounter)
+            #print(suitableNoteLength, validLengthCounter)
 
             while overflow != 0:
                 overflow = overflow - suitableNoteLength
@@ -296,6 +297,47 @@ for noteObj in new_my_notes:
             pitch = pitch + getNoteType(classified) + space
             newStaffu += pitch
             newStaffl += rest + getNoteType(classified) + space
+    elif isRest:
+        if fullMeasure:
+            pitch = pitch + getNoteType(classified) + space
+            newStaffu += pitch
+            newStaffl += pitch
+            newStaffu += bar
+            newStaffl += bar
+            lengthCounter = 0
+        elif exceedingMeasure:
+            notesToFillMeasure = 0
+            notesToAppendAfterMeasure = 0
+            validLengthCounter = lengthCounter - dLength
+            # OVerflow amount
+            overflow = lengthCounter - measureLength
+            lengthCounter = overflow
+            # Finding the suitable length to validate the measure  
+            while True:
+                done = False
+                for i in range(16):
+                    print('overflow',overflow, 'Original NL', dLength, 'ValidLC',validLengthCounter,'| noteType', getNoteType(classified), '| noteLength', ((i+1) * getNoteLength(int(getNoteType(classified)))), '| Total Length', validLengthCounter + ((i+1) * getNoteLength(int(getNoteType(classified)))))
+                    if validLengthCounter + ((i+1) * getNoteLength(int(getNoteType(classified)))) == measureLength:
+                        notesToFillMeasure = i+1
+                        done = True
+                        break
+                if done:
+                    break
+                classified = classified / 2
+            suitableNoteLength = getNoteLength(int(getNoteType(classified)))
+            while overflow != 0:
+                overflow = overflow - suitableNoteLength
+                notesToAppendAfterMeasure += 1
+            for i in range(notesToFillMeasure):
+                newStaffl += pitch + getNoteType(classified) + space
+                newStaffu += pitch + getNoteType(classified) + space
+            
+            newStaffl += bar
+            newStaffu += bar
+
+            for i in range(notesToAppendAfterMeasure):
+                newStaffl += pitch + getNoteType(classified) + space
+                newStaffu += pitch + getNoteType(classified) + space
 
     
     
