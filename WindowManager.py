@@ -35,7 +35,7 @@ class App(tk.Frame): #class for making the window
         global photo
         global photo2
         #display status for recording/not recording
-        label = Label(panel, text="Not Recording", font=("Helvetica", 12), fg="red", bg="yellow")
+        label = Label(panel, text="Not Recording", font=("Helvetica", 12), fg="red", bg="light gray")
         label.place(x=220, y=45, anchor="w")
         
         #Label of fileName entry field
@@ -75,7 +75,7 @@ class App(tk.Frame): #class for making the window
         if bool == 0:
             #T.delete('1.0', END)
             #T.insert(END,"Recording")
-            label = Label(self, text="    Recording   ", font=("Helvetica", 12), fg="green", bg="yellow")
+            label = Label(self, text="    Recording   ", font=("Helvetica", 12), fg="green", bg="light gray")
             label.place(x=222, y=61, anchor="w")
             temp = subprocess.call('cleaner.sh',shell = True)
             #time counter
@@ -107,7 +107,7 @@ class App(tk.Frame): #class for making the window
             bool = 0
             #T.delete('1.0', END)
             #T.insert(END,"Not Recording")
-            label = Label(self, text="Not Recording", font=("Helvetica", 12), fg="red", bg="yellow")
+            label = Label(self, text="Not Recording", font=("Helvetica", 12), fg="red", bg="light gray")
             label.place(x=222, y=61, anchor="w")
             subprocess.call('lilyP.sh',shell = True)
             #open("output.pdf")

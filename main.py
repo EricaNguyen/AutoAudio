@@ -169,7 +169,7 @@ for noteObj in new_my_notes:
     isRest = whichStaff(pitch)[2]
 
     #If note is Octave 3 or lower
-    if (numOfComm == 1 and not isRest) or numOfApos + numOfComm == 0:
+    if (numOfComm == 1 or numOfApos + numOfComm == 0) and not isRest:
         # If valid measure
         if fullMeasure:
             pitch = pitch + getNoteType(classified) + space
