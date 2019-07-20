@@ -59,8 +59,8 @@ def getNoteLength(myInt):
         noteLength = wholeNoteLength
     return noteLength
 
-def getNoteType(myInt):
-    
+def getNoteType(myInt, noteDurKeys):
+    (s, e, q, hf, w) = noteDurKeys
     typeN = ''
     
     if myInt == s:
@@ -75,17 +75,18 @@ def getNoteType(myInt):
         typeN += quarterNote
     return typeN
 
-def validate(classified, measureLength, dLength, lengthCounter, sumOfDuration, new_my_notes):
+def validate(classified, measureLength, dLength, lengthCounter, noteDurKeys):
     overflow = lengthCounter - measureLength
     lengthCounter = overflow
     validLengthCounter = lengthCounter - dLength
     notesToFillMeasure = 0
     notesToAppendAfterMeasure = 0
+    # Finding the suitable length to validate the measure  
     while True:
         done = False
         for i in range(16):
             # Debugging: print('overflow',overflow, 'Original NL', dLength, 'ValidLC',validLengthCounter,'| noteType', getNoteType(classified), '| noteLength', ((i+1) * getNoteLength(int(getNoteType(classified)))), '| Total Length', validLengthCounter + ((i+1) * getNoteLength(int(getNoteType(classified)))))
-            if validLengthCounter + ((i+1) * getNoteLength(int(getNoteType(classified, sumOfDuration, new_my_notes)))) == measureLength:
+            if validLengthCounter + ((i+1) * getNoteLength(int(getNoteType(classified, noteDurKeys)))) == measureLength:
                 notesToFillMeasure = i+1
                 done = True
                 break
@@ -93,11 +94,11 @@ def validate(classified, measureLength, dLength, lengthCounter, sumOfDuration, n
             break
         classified = classified / 2
 
-    suitableNoteString = getNoteType(classified, sumOfDuration, new_my_notes)
+    suitableNoteString = getNoteType(classified, noteDurKeys)
     suitableNoteLength = getNoteLength(int(suitableNoteString))
 
     while overflow != 0:
         overflow = overflow - suitableNoteLength
         notesToAppendAfterMeasure += 1
 
-    return (classified, notesToFillMeasure, notesToAppendAfterMeasure, suitableNoteString)
+    return (classified, notesToFillMeasure, notesToAppendAfterMeasure, suitableNoteString, lengthCounter)
