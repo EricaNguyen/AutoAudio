@@ -80,7 +80,7 @@ class App(tk.Frame): #class for making the window
             #T.insert(END,"Recording")
             label = Label(self, text="    Recording   ", font=("Helvetica", 12), fg="green", bg="light gray")
             label.place(x=222, y=61, anchor="w")
-            temp = subprocess.call('cleaner.sh',shell = True)
+            temp = subprocess.call('.\scripts\cleaner.sh',shell = True)
             #time counter
             i = 0
             #test code
@@ -91,7 +91,7 @@ class App(tk.Frame): #class for making the window
                 if i>5000:
                     temp.terminate()
                     break
-            p = subprocess.Popen(['python', 'main.py'])
+            p = subprocess.Popen(['python', '.\src\main.py'])
             #test code, use instead of subprocess if thing don't work
             #p = subprocess.Popen(['python', 'WindowManager.py'])
         bool = 1
@@ -117,7 +117,7 @@ class App(tk.Frame): #class for making the window
             # except:
             #     pass
             try:
-                subprocess.call('finished.sh', shell = True)
+                subprocess.call('.\scripts\finished.sh', shell = True)
             except:
                 pass
             #open("output.pdf")
