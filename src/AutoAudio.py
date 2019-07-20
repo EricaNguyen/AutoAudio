@@ -11,7 +11,6 @@ import subprocess
 #command definitions
 #record button functions, aka button
 bool = 0
-
 class App(tk.Frame): #class for making the window
     
     def __init__(self, master=None): #where info on what the window displays is defined
@@ -80,19 +79,12 @@ class App(tk.Frame): #class for making the window
             #T.insert(END,"Recording")
             label = Label(self, text="    Recording   ", font=("Helvetica", 12), fg="green", bg="light gray")
             label.place(x=222, y=61, anchor="w")
-            os.chdir('..')
-            temp = subprocess.call('.\scripts\cleaner.sh',shell = True)
+            subprocess.call(r'.\scripts\cleaner.sh',shell = True)
             #time counter
-            i = 0
             #test code
             #print(temp)
             #while temp isn't done, wait until it's done
-            while temp != 0:
-                i = i+1
-                if i>5000:
-                    temp.terminate()
-                    break
-            p = subprocess.Popen(['python', '.\src\core\main.py'])
+            p = subprocess.Popen([r'python', r'.\core\main.py'])
             #test code, use instead of subprocess if thing don't work
             #p = subprocess.Popen(['python', 'WindowManager.py'])
         bool = 1
@@ -117,9 +109,8 @@ class App(tk.Frame): #class for making the window
             #     subprocess.call('lilyP.sh',shell = True)
             # except:
             #     pass
-            os.chdir('..')
             try:
-                subprocess.call('.\scripts\finished.sh', shell = True)
+                subprocess.call(r'.\scripts\finished.sh', shell = True)
             except:
                 pass
             #open("output.pdf")
