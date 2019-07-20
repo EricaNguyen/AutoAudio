@@ -5,7 +5,7 @@ import sys
 import signal
 import subprocess
 
-#pyinstaller --onefile --hidden-import tkinter WindowManager.py
+#pyinstaller --onefile --hidden-import tkinter -F AutoAudio.py
 
 #p = subprocess.Popen(['head', 'README.txt'])
 #command definitions
