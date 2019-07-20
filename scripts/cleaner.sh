@@ -10,4 +10,8 @@ rm output.ly
 
 echo removing output.pdf
 rm output.pdf
+
+echo removing output.log
+rm output.log
+
 echo cleaner done
