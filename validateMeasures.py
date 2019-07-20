@@ -58,3 +58,46 @@ def getNoteLength(myInt):
     else:
         noteLength = wholeNoteLength
     return noteLength
+
+def getNoteType(myInt):
+    
+    typeN = ''
+    
+    if myInt == s:
+        typeN += sixteenthNote
+    elif myInt == e:
+        typeN += eighthNote
+    elif myInt == hf:
+        typeN += halfNote
+    elif myInt == w:
+        typeN += wholeNote
+    elif myInt == q:
+        typeN += quarterNote
+    return typeN
+
+def validate(classified, measureLength, dLength, lengthCounter, sumOfDuration, new_my_notes):
+    overflow = lengthCounter - measureLength
+    lengthCounter = overflow
+    validLengthCounter = lengthCounter - dLength
+    notesToFillMeasure = 0
+    notesToAppendAfterMeasure = 0
+    while True:
+        done = False
+        for i in range(16):
+            # Debugging: print('overflow',overflow, 'Original NL', dLength, 'ValidLC',validLengthCounter,'| noteType', getNoteType(classified), '| noteLength', ((i+1) * getNoteLength(int(getNoteType(classified)))), '| Total Length', validLengthCounter + ((i+1) * getNoteLength(int(getNoteType(classified)))))
+            if validLengthCounter + ((i+1) * getNoteLength(int(getNoteType(classified, sumOfDuration, new_my_notes)))) == measureLength:
+                notesToFillMeasure = i+1
+                done = True
+                break
+        if done:
+            break
+        classified = classified / 2
+
+    suitableNoteString = getNoteType(classified, sumOfDuration, new_my_notes)
+    suitableNoteLength = getNoteLength(int(suitableNoteString))
+
+    while overflow != 0:
+        overflow = overflow - suitableNoteLength
+        notesToAppendAfterMeasure += 1
+
+    return (classified, notesToFillMeasure, notesToAppendAfterMeasure, suitableNoteString)
