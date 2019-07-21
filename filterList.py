@@ -19,15 +19,16 @@ def fixDuration(noteList):
     return noteList
 
 def outlierRemoval(noteList, eighthnote):
-    #insert all with duration > eighthnote into new_my_notes
+    #insert all with duration > sixteenth note into new_my_notes
     new_my_notes = []
-    sumOfDuration = 0
+    mySixteenth = eighthnote/2
     for noteObj in noteList:
-        #remove notes and rests that are really short
-        if noteObj.duration > eighthnote: 
-            sumOfDuration += noteObj.duration
+        #also remove rests TODO remove that
+        if noteObj.duration > mySixteenth and noteObj.pitch != 'r':
+            new_my_notes.append(noteObj)
+        elif noteObj.pitch == 'r' and noteObj.duration > eighthnote:
             new_my_notes.append(noteObj)
 
-    return (new_my_notes, sumOfDuration)
+    return (new_my_notes)
 
     
