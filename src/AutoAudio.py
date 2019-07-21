@@ -7,10 +7,8 @@ import subprocess
 
 #pyinstaller --onefile --hidden-import tkinter -F src/AutoAudio.py
 
-#p = subprocess.Popen(['head', 'README.txt'])
-#command definitions
-#record button functions, aka button
-bool = 0
+bool = 0 #used for record button functions. 0 means not recording, 1 means recording
+
 class App(tk.Frame): #class for making the window
     
     def __init__(self, master=None): #where info on what the window displays is defined
@@ -34,26 +32,29 @@ class App(tk.Frame): #class for making the window
         #global e1
         #global e2
         #global e3
+        
+        #button images
         global photo
         global photo2
+        
         #display status for recording/not recording
         label = Label(panel, text="Not Recording", font=("Helvetica", 12), fg="red", bg="light gray")
         label.place(x=220, y=45, anchor="w")
         
-        #Label of fileName entry field
-        #Label(panel, text="Put Output Filename Here:").place(x=20, y=60, anchor="w")
-        #e1 = Entry(panel)
-        #e1.place(x=170, y=60, anchor="w")
-        #Label(panel, text="Put the Song Name Here:").place(x=20, y=90, anchor="w")
-        #e2 = Entry(panel)
-        #e2.place(x=165, y=90, anchor="w")
-        #Label(panel, text="Put the Song Writer's Name Here:").place(x=20, y=120, anchor="w")
-        #e3 = Entry(panel)
-        #e3.place(x=205, y=120, anchor="w")
-        #default name
-        #fileName = "NoteSheet"
-        #authorName = "Author"
-        #songName = "My Song 1"
+        '''Label of fileName entry field (does not work)
+        Label(panel, text="Put Output Filename Here:").place(x=20, y=60, anchor="w")
+        e1 = Entry(panel)
+        e1.place(x=170, y=60, anchor="w")
+        Label(panel, text="Put the Song Name Here:").place(x=20, y=90, anchor="w")
+        e2 = Entry(panel)
+        e2.place(x=165, y=90, anchor="w")
+        Label(panel, text="Put the Song Writer's Name Here:").place(x=20, y=120, anchor="w")
+        e3 = Entry(panel)
+        e3.place(x=205, y=120, anchor="w")
+        default name
+        fileName = "NoteSheet"
+        authorName = "Author"
+        songName = "My Song 1"'''
         
         #buttons for control panel
         location = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(sys.argv[0])))
@@ -67,48 +68,31 @@ class App(tk.Frame): #class for making the window
         button3.place(x=20, y=190, anchor="w")
         
     def create_instructions(self, panel): #the text that goes inside the instructions panel  
-        instrText = Message(panel, text="Welcome to AutoAudio!\n\nThis program uses the LilyPond music engraving program to help YOU write your own sheet music!\nNo need to understand complex music theory!\nJust hit “Start Recording” and start singing, playing your favorite instrument, or just making sounds.\nWhen you’re done expressing yourself, press “Stop Recording” and your song will be written for you.\nJust run the resultant “output.ly” file with LilyPond and open the PDF file written by the program to see it.\nNow anyone can be a music composer! Hit “Start” and have fun!\n\nInstall LilyPond: lilypond.org", font=("Helvetica", 8)) #replace with instructions text
+        instrText = Message(panel, text="Welcome to AutoAudio!\n\nThis program uses the LilyPond music engraving program to help YOU write your own sheet music!\nNo need to understand complex music theory!\nJust hit “Start Recording” and start singing, playing your favorite instrument, or just making sounds.\nWhen you’re done expressing yourself, press “Stop Recording” and your song will be written for you.\nCheck the src folder and double-click on “ouput.pdf” to see your sheet music!\nNow anyone can be a music composer! Hit “Start” and have fun!\n\nInstall LilyPond: lilypond.org", font=("Helvetica", 8)) #replace with instructions text
         instrText.config(width = '350')
         instrText.place(x=20, y=0, anchor='nw')
        
-    def record(self):
+    def record(self): #records the user's sound
         global p
         global bool
-        if bool == 0:
-            #T.delete('1.0', END)
-            #T.insert(END,"Recording")
+        if bool == 0: #check if user is not already recording
             label = Label(self, text="    Recording   ", font=("Helvetica", 12), fg="green", bg="light gray")
             label.place(x=222, y=61, anchor="w")
             subprocess.call(r'.\scripts\cleaner.sh',shell = True)
-            #time counter
-            #test code
-            #print(temp)
-            #while temp isn't done, wait until it's done
             p = subprocess.Popen([r'python', r'.\core\main.py'])
-            #test code, use instead of subprocess if thing don't work
-            #p = subprocess.Popen(['python', 'WindowManager.py'])
         bool = 1
-        #print(fileName)
         
-        
-    #stop record button functions, aka button 2
-    def stopR(self):
+    def stopR(self): #stops recording
         global fileName
         global songName
         global authorName
         global bool
-        if bool == 1:
+        if bool == 1: #check if user was recording
             pid = p.pid
-            os.kill(pid, signal.CTRL_C_EVENT)
+            os.kill(pid, signal.CTRL_C_EVENT) #ends recording and saves input
             bool = 0
-            #T.delete('1.0', END)
-            #T.insert(END,"Not Recording")
             label = Label(self, text="Not Recording", font=("Helvetica", 12), fg="red", bg="light gray")
             label.place(x=222, y=61, anchor="w")
-            # try:
-            #     subprocess.call('lilyP.sh',shell = True)
-            # except:
-            #     pass
             try:
                 subprocess.call(r'.\scripts\finished.sh', shell = True)
             except:
@@ -123,9 +107,8 @@ class App(tk.Frame): #class for making the window
             #check if there was any recording done
             #pass filename into lilypond or freqAnalyzer
         bool = 0
-		
-    #quitting the program, aka button 3
-    def quit(self):
+		    
+    def quit(self): #exits the program
         if bool == 1:
             App.stopR(self)
         sys.exit()
@@ -141,6 +124,7 @@ class App(tk.Frame): #class for making the window
     def getSName():
         global songName
         return songName
+        
 # create the application for the user to see
 myapp = App()
 
