@@ -1,4 +1,4 @@
-AutoAudio Installation Manual
+AutoAudio Installation/User Manual
 
 1. To use this program, you must first download the source code
    from the Git repository. You can do this through your browser at the URL: 
@@ -33,3 +33,6 @@ AutoAudio Installation Manual
 
 6. For non-Linux/Unix systems, you will need a Bash emulator.
    This can be used through git, which can be downloaded from: <https://git-scm.com/downloads>
+
+7. Once everything has been properly installed, run the executable located in:
+   <DIR\AutoAudio-master\src\AutoAudio.exe>
