@@ -22,6 +22,8 @@ AutoAudio Installation Manual
 -- In Windows, open a Command Prompt and install the given libraries using pip.
    This can be done by simply entering the command:
    <python -m pip install --user aubio numpy pyaudio>.
+-- Wheels for each library can be installed manually, in case errors occur:
+   https://www.lfd.uci.edu/~gohlke/pythonlibs/
 
 5. Install LilyPond from <http://lilypond.org/>.
 -- The LilyPond website gives documentation on installation, as well as
