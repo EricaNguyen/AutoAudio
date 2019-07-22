@@ -19,9 +19,11 @@ AutoAudio Installation Manual
    Once downloaded, run the executable to install the tools.
 
 4. Install Python libraries needed to run the program: numpy, aubio, and pyaudio.
--- In Windows, open a Command Prompt and install the given libraries using pip.
+-- In Windows, open a Command Prompt and install the given libraries using pip and pipwin.
    This can be done by simply entering the command:
-   <python -m pip install --user aubio numpy pyaudio>.
+   <python -m pip install --user pipwin>
+   <python -m pipwin install --user pyaudio numpy>
+   <python -m pip install --user aubio>
 -- Wheels for each library can be installed manually, in case errors occur:
    https://www.lfd.uci.edu/~gohlke/pythonlibs/
 
